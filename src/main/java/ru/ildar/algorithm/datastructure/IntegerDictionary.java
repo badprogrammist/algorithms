@@ -7,6 +7,7 @@ public class IntegerDictionary {
 
     private boolean[] arr;
     private static final int DEFAULT_SIZE = 256;
+    private int valuesSize = 0;
 
     public IntegerDictionary() {
         arr = new boolean[DEFAULT_SIZE];
@@ -16,15 +17,21 @@ public class IntegerDictionary {
         arr = new boolean[size];
     }
 
-    public void put(int index) {
+    public void put(int index) throws IndexOutOfBoundsException {
         if(index < arr.length) {
             arr[index] = true;
+            valuesSize++;
+        } else {
+            throw new IndexOutOfBoundsException("index: " + index + ", max: " + arr.length);
         }
     }
 
-    public void remove(int index) {
+    public void remove(int index) throws IndexOutOfBoundsException {
         if(index < arr.length) {
             arr[index] = false;
+            valuesSize--;
+        } else {
+            throw new IndexOutOfBoundsException("index: " + index + ", max: " + arr.length);
         }
     }
 
@@ -35,5 +42,16 @@ public class IntegerDictionary {
         return index < arr.length && arr[index];
     }
 
+    public int[] values() {
+        int[] values = new int[valuesSize];
+        int valueIndex = 0;
+        for(int i = 0; i < arr.length; i++) {
+            if(arr[i]) {
+                values[valueIndex] = i;
+                valueIndex++;
+            }
+        }
+        return values;
+    }
 
 }
