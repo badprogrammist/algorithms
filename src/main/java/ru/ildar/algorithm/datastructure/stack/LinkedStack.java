@@ -37,6 +37,14 @@ public class LinkedStack<E> implements Stack<E> {
     }
 
     @Override
+    public E getLast() {
+        if(head != null) {
+            return head.getData();
+        }
+        return null;
+    }
+
+    @Override
     public int size() {
         return size;
     }

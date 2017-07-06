@@ -9,6 +9,7 @@ public interface Stack<E> {
 
     void put(E e);
     E poll() throws NoSuchElementException;
+    E getLast();
     int size();
 
 }
