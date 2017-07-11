@@ -36,11 +36,12 @@ public class BinaryTreeIterator<E extends Comparable<E>> implements TreeIterator
         if (path.size() == 0) {
             path.put(root);
             return root.getData();
-        } else if (path.getLast().getLeft() != last && path.getLast().getRight() != last) {
+        } else if ((last != null && path.getLast().getLeft() != last && path.getLast().getRight() != last)
+                || (last == null && path.getLast().getLeft() != null)) {
             E data = path.getLast().getLeft().getData();
             path.put(path.getLast().getLeft());
             return data;
-        } else if (path.getLast().getRight() != last) {
+        } else if (path.getLast().getRight() != null && path.getLast().getRight() != last) {
             E data = path.getLast().getRight().getData();
             path.put(path.getLast().getRight());
             return data;
