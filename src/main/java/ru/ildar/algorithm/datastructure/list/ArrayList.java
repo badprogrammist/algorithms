@@ -13,6 +13,10 @@ public class ArrayList<E> implements List<E> {
         array = new Object[INITIAL_CAPACITY];
     }
 
+    public ArrayList(int initialCapacity) {
+        array = new Object[initialCapacity];
+    }
+
     @Override
     public void add(E e) {
         if (size == array.length) {
