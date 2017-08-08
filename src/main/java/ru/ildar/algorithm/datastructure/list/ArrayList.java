@@ -49,8 +49,14 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public void remove(int index) {
-        for (int i = index; i < array.length - 1; i++) {
+    public void set(E e, int index) throws IndexOutOfBoundsException  {
+        array[index] = e;
+    }
+
+    @Override
+    public E remove(int index) {
+        E element = (E) array[index];
+        for (int i = index; i < size - 1; i++) {
             array[i] = array[i + 1];
         }
         size--;
@@ -58,6 +64,7 @@ public class ArrayList<E> implements List<E> {
         if (array.length / 4 == size) {
             decreaseCapacity();
         }
+        return element;
 
     }
 

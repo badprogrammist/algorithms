@@ -47,6 +47,13 @@ class ArrayListTest extends Specification {
         and: "Check of getting elements by index"
         list.get(0) == e2
         list.get(1) == e3
+
+        when: "Set element in definite position"
+        list.set('0', 0)
+
+        then: "Element should be in that position"
+        list.get(0) == '0'
+
     }
 
 }

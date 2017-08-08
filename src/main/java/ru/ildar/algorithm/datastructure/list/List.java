@@ -7,7 +7,8 @@ public interface List<E> {
 
     void add(E e);
     E get(int index);
-    void remove(int index);
+    void set(E e, int index);
+    E remove(int index);
     int indexOf(E e);
     int size();
 
