@@ -11,5 +11,6 @@ public interface List<E> {
     E remove(int index);
     int indexOf(E e);
     int size();
+    E[] toArray();
 
 }
