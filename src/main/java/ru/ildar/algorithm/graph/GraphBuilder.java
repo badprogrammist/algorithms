@@ -47,10 +47,10 @@ public class GraphBuilder {
         }
 
         if (adjacencyType == AdjacencyType.LIST) {
-            graph = new AdjacencyList(vertices.size(), edges.size(), directed);
+            graph = new AdjacencyList(vertices.size(), directed);
         }
         if (adjacencyType == AdjacencyType.MATRIX) {
-            graph = new AdjacencyMatrix(vertices.size(), edges.size(), directed);
+            graph = new AdjacencyMatrix(vertices.size(), directed);
         }
 
         if (graph != null) {

@@ -25,10 +25,10 @@ public class BraceValidator {
         while (index < s.length()) {
             char c = s.charAt(index);
             if(c == OPEN_CHAR) {
-                stack.put(c);
+                stack.push(c);
             } else if(c == CLOSE_CHAR) {
                 try {
-                    stack.poll();
+                    stack.pop();
                 } catch (NoSuchElementException ex) {
                     return index;
                 }

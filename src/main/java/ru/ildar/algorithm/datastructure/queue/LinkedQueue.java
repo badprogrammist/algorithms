@@ -1,38 +1,52 @@
-package ru.ildar.algorithm.datastructure.stack;
+package ru.ildar.algorithm.datastructure.queue;
 
 import java.util.NoSuchElementException;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-public class LinkedStack<E> implements Stack<E> {
+public class LinkedQueue<E> implements Queue<E> {
 
     private Node head;
+    private Node tail;
     private int size;
 
-    public LinkedStack() {
+    public LinkedQueue() {
         head = null;
+        tail = null;
         size = 0;
     }
 
     @Override
-    public void push(E data) {
-        if(head == null) {
-            head = new Node(data, null);
+    public void add(E e) {
+        if (size() == 0) {
+            head = new Node(e);
+            tail = head;
         } else {
-            head = new Node(data, head);
+            Node node = new Node(e);
+            tail.setPrev(node);
+            tail = node;
         }
         size++;
     }
 
     @Override
-    public E pop() throws NoSuchElementException {
+    public E poll() throws NoSuchElementException {
         if(head == null) {
-            throw new NoSuchElementException("Stack is empty");
+            throw new NoSuchElementException("Queue is empty");
         }
+
         E data = head.getData();
-        head = head.getPrev();
+
+        if (size() == 1) {
+            head = null;
+            tail = null;
+        } else {
+            head = head.getPrev();
+        }
+
         size--;
+
         return data;
     }
 
@@ -53,9 +67,8 @@ public class LinkedStack<E> implements Stack<E> {
         private E data;
         private Node prev;
 
-        Node(E data, Node prev) {
+        Node(E data) {
             this.data = data;
-            this.prev = prev;
         }
 
         E getData() {
@@ -65,5 +78,10 @@ public class LinkedStack<E> implements Stack<E> {
         Node getPrev() {
             return prev;
         }
+
+        void setPrev(Node prev) {
+            this.prev = prev;
+        }
     }
+
 }

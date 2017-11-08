@@ -12,9 +12,15 @@ public interface GraphTraversal {
 
     void setEdgeProcessor(EdgeProcessorConsumer edgeProcessor);
 
-    void run(Graph graph, int start);
+    void traverse(int start);
 
-    int parentOf(int vertex) throws IllegalArgumentException, IllegalStateException;
+    int parentOf(int vertex) throws IllegalArgumentException;
+
+    boolean isDiscovered(int vertex);
+
+    boolean isProcessed(int vertex);
+
+    Graph getGraph();
 
     @FunctionalInterface
     interface VertexProcessorConsumer {

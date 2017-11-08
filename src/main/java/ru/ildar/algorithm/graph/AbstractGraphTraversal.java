@@ -8,8 +8,10 @@ public abstract class AbstractGraphTraversal implements GraphTraversal {
     private VertexProcessorConsumer vertexPreProcessor;
     private VertexProcessorConsumer vertexPostProcessor;
     private EdgeProcessorConsumer edgeProcessor;
+    private Graph graph;
 
-    public AbstractGraphTraversal() {
+    public AbstractGraphTraversal(Graph graph) {
+        this.graph = graph;
     }
 
     @Override
@@ -37,5 +39,10 @@ public abstract class AbstractGraphTraversal implements GraphTraversal {
 
     protected EdgeProcessorConsumer getEdgeProcessor() {
         return edgeProcessor;
+    }
+
+    @Override
+    public Graph getGraph() {
+        return graph;
     }
 }

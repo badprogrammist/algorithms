@@ -11,9 +11,9 @@ public abstract class AbstractGraph implements Graph {
 
     private int[] degrees;
 
-    public AbstractGraph(int verticesCount, int edgesCount, boolean directed) {
+    public AbstractGraph(int verticesCount,  boolean directed) {
         this.verticesCount = verticesCount;
-        this.edgesCount = edgesCount;
+        this.edgesCount = 0;
         this.directed = directed;
         initDegrees();
     }
@@ -29,6 +29,21 @@ public abstract class AbstractGraph implements Graph {
         validateVertex(vertex);
         degrees[vertex]++;
     }
+
+    @Override
+    public void insertEdge(int v1, int v2, double weight) {
+        validateVertex(v1);
+        validateVertex(v2);
+
+        createEdge(v1, v2, weight);
+        if (!isDirected()) {
+            createEdge(v2, v1, weight);
+        }
+
+        edgesCount++;
+    }
+
+    protected abstract void createEdge(int parent, int child, double weight);
 
     @Override
     public void validateVertex(int vertex) throws IllegalArgumentException {
@@ -48,13 +63,14 @@ public abstract class AbstractGraph implements Graph {
         return verticesCount;
     }
 
-    @Override
-    public int getEdgesCount() {
-        return edgesCount;
-    }
 
     @Override
     public boolean isDirected() {
         return directed;
+    }
+
+    @Override
+    public int getEdgesCount() {
+        return edgesCount;
     }
 }

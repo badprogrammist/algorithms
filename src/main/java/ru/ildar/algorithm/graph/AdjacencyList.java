@@ -9,31 +9,20 @@ public class AdjacencyList extends AbstractGraph {
 
     private EdgeNode[] edges;
 
-    public AdjacencyList(int verticesCount, int edgesCount, boolean directed) {
-        super(verticesCount, edgesCount, directed);
+    public AdjacencyList(int verticesCount, boolean directed) {
+        super(verticesCount, directed);
         initEdges();
     }
 
     private void initEdges() {
-        edges = new EdgeNode[getEdgesCount()];
-        for (int i = 0; i < getEdgesCount(); i++) {
+        edges = new EdgeNode[getVerticesCount()];
+        for (int i = 0; i < getVerticesCount(); i++) {
             edges[i] = new EdgeNode(i, 0);
         }
     }
 
     @Override
-    public void insertEdge(int v1, int v2, double weight) {
-        validateVertex(v1);
-        validateVertex(v2);
-
-        createEdge(v1, v2, weight);
-
-        if (!isDirected()) {
-            createEdge(v2, v1, weight);
-        }
-    }
-
-    private void createEdge(int parent, int child, double weight) {
+    protected void createEdge(int parent, int child, double weight) {
         EdgeNode parentVertex = edges[parent];
         EdgeNode childVertex = new EdgeNode(child, weight);
         if (parentVertex.next != null) {

@@ -11,8 +11,8 @@ public class AdjacencyMatrix extends AbstractGraph {
 
     private Edge[][] matrix;
 
-    public AdjacencyMatrix(int verticesCount, int edgesCount, boolean directed) {
-        super(verticesCount, edgesCount, directed);
+    public AdjacencyMatrix(int verticesCount, boolean directed) {
+        super(verticesCount, directed);
         initMatrix();
     }
 
@@ -28,17 +28,7 @@ public class AdjacencyMatrix extends AbstractGraph {
     }
 
     @Override
-    public void insertEdge(int v1, int v2, double weight) {
-        validateVertex(v1);
-        validateVertex(v2);
-
-        createEdge(v1, v2, weight);
-        if (!isDirected()) {
-            createEdge(v2, v1, weight);
-        }
-    }
-
-    private void createEdge(int parent, int child, double weight) {
+    protected void createEdge(int parent, int child, double weight) {
         Edge edge = matrix[parent][child];
         edge.adjacent = true;
         edge.weight = weight;

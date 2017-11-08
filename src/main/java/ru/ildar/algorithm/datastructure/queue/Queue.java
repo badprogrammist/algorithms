@@ -1,15 +1,16 @@
-package ru.ildar.algorithm.datastructure.stack;
+package ru.ildar.algorithm.datastructure.queue;
 
 import java.util.NoSuchElementException;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-public interface Stack<E> {
+public interface Queue<E> {
 
-    void push(E e);
 
-    E pop() throws NoSuchElementException;
+    void add(E e);
+
+    E poll() throws NoSuchElementException;
 
     E peek();
 

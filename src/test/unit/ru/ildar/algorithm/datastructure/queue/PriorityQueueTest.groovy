@@ -64,7 +64,7 @@ class PriorityQueueTest extends Specification {
         e2 == 1.3
         e3 == 1.8
 
-        when: "Try to poll element"
+        when: "Try to pop element"
         queue.pollMax()
 
         then: "An exception is thrown"

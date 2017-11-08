@@ -41,7 +41,7 @@ public class SearchTreeWP<E extends Comparable<E>> implements Tree<E> {
         Stack<Node<E>> path = new LinkedStack<>();
         Node<E> node = makePath(e, root, path);
         if(node != null) {
-            Node<E> parent = path.getLast();
+            Node<E> parent = path.peek();
             if(node.left == null && node.right == null) {
                 if(parent.left == node) {
                     parent.left = null;
@@ -102,7 +102,7 @@ public class SearchTreeWP<E extends Comparable<E>> implements Tree<E> {
             return parent;
         }
 
-        path.put(parent);
+        path.push(parent);
         if (e.compareTo(parent.data) < 0) {
             return makePath(e, parent.left, path);
         } else {
@@ -175,19 +175,19 @@ public class SearchTreeWP<E extends Comparable<E>> implements Tree<E> {
 
         private D getNext(Node<D> last) throws NoSuchElementException {
             if (path.size() == 0) {
-                path.put(root);
+                path.push(root);
                 return root.data;
-            } else if ((last != null && path.getLast().left != last && path.getLast().right != last)
-                    || (last == null && path.getLast().left != null)) {
-                D data = path.getLast().left.data;
-                path.put(path.getLast().left);
+            } else if ((last != null && path.peek().left != last && path.peek().right != last)
+                    || (last == null && path.peek().left != null)) {
+                D data = path.peek().left.data;
+                path.push(path.peek().left);
                 return data;
-            } else if (path.getLast().right != null && path.getLast().right != last) {
-                D data = path.getLast().right.data;
-                path.put(path.getLast().right);
+            } else if (path.peek().right != null && path.peek().right != last) {
+                D data = path.peek().right.data;
+                path.push(path.peek().right);
                 return data;
             } else {
-                return getNext(path.poll());
+                return getNext(path.pop());
             }
         }
 
