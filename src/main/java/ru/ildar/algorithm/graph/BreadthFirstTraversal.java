@@ -38,15 +38,13 @@ public class BreadthFirstTraversal extends AbstractGraphTraversal {
             if (getVertexPreProcessor() != null) {
                 getVertexPreProcessor().accept(getGraph(), vertex);
             }
-
             processed[vertex] = true;
 
             Iterator<Integer> edges = getGraph().getAdjacentEdgesIterator(vertex);
-
             while (edges.hasNext()) {
                 int adjacencyVertex = edges.next();
 
-                if (!processed[adjacencyVertex]) {
+                if (!processed[adjacencyVertex] || getGraph().isDirected()) {
 
                     if (getEdgeProcessor() != null) {
                         getEdgeProcessor().accept(getGraph(), vertex, adjacencyVertex);
