@@ -13,7 +13,7 @@ public class Colorize {
         success = true;
 
         GraphTraversal traversal = new BreadthFirstTraversal(graph);
-        traversal.setEdgeProcessor((Graph g, int v1, int v2) -> {
+        traversal.setEdgeProcessor((GraphTraversal tr, int v1, int v2) -> {
             if (verticesColors[v1] == Color.NONE) {
                 success = false;
             } else if (verticesColors[v2] != Color.NONE && verticesColors[v1] == verticesColors[v2]) {

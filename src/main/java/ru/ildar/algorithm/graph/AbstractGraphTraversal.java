@@ -26,19 +26,19 @@ public abstract class AbstractGraphTraversal implements GraphTraversal {
 
     protected void preProcessVertex(int vertex) {
         if (vertexPreProcessor != null) {
-            vertexPreProcessor.accept(getGraph(), vertex);
+            vertexPreProcessor.accept(this, vertex);
         }
     }
 
     protected void postProcessVertex(int vertex) {
         if (vertexPostProcessor != null) {
-            vertexPostProcessor.accept(getGraph(), vertex);
+            vertexPostProcessor.accept(this, vertex);
         }
     }
 
     protected void processEdge(int vertex, int adjacencyVertex) {
         if (edgeProcessor != null) {
-            edgeProcessor.accept(getGraph(), vertex, adjacencyVertex);
+            edgeProcessor.accept(this, vertex, adjacencyVertex);
         }
     }
 

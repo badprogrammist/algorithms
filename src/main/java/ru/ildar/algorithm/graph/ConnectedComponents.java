@@ -18,7 +18,7 @@ public class ConnectedComponents {
         for (int v = 0; v < graph.getVerticesCount(); v++) {
             List<Integer> vertices = new ArrayList<>(graph.getVerticesCount());
 
-            traversal.setVertexPreProcessor((Graph g, int vertex) -> vertices.add(vertex));
+            traversal.setVertexPreProcessor((GraphTraversal tr, int vertex) -> vertices.add(vertex));
 
             if (!traversal.isDiscovered(v)) {
                 traversal.traverse(v);

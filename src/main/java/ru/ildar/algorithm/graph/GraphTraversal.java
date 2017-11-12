@@ -25,14 +25,14 @@ public interface GraphTraversal {
     @FunctionalInterface
     interface VertexProcessorConsumer {
 
-        void accept(Graph graph, int vertex);
+        void accept(GraphTraversal traversal, int vertex);
 
     }
 
     @FunctionalInterface
     interface EdgeProcessorConsumer {
 
-        void accept(Graph graph, int v1, int v2);
+        void accept(GraphTraversal traversal, int v1, int v2);
 
     }
 }

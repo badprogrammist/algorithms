@@ -66,9 +66,9 @@ class DepthFirstTraversalTest extends Specification {
         when: "Trying to traverse through graph"
         def t = new DepthFirstTraversal(graph)
         def tch = new TraverseChecker(t: t, expectedPath: expectedPath, expectedAdjacencyEdges: expectedAdjacencyEdges)
-        t.setVertexPreProcessor { g, v -> tch.preProcessVertex(g, v) }
-        t.setVertexPostProcessor { g, v -> tch.postProcessVertex(g, v) }
-        t.setEdgeProcessor { g, v1, v2 -> tch.processEdge(g, v1, v2) }
+        t.setVertexPreProcessor { traversal, v -> tch.preProcessVertex(traversal, v) }
+        t.setVertexPostProcessor { traversal, v -> tch.postProcessVertex(traversal, v) }
+        t.setEdgeProcessor { traversal, v1, v2 -> tch.processEdge(traversal, v1, v2) }
         t.traverse(start)
 
         then: "The path of traversing graph and adjacency edges should equals expected"
@@ -99,22 +99,20 @@ class DepthFirstTraversalTest extends Specification {
         Map<Integer, int[]> expectedAdjacencyEdges
         boolean success = true
 
-        void preProcessVertex(Graph g, int v) {
+        void preProcessVertex(GraphTraversal traversal, int v) {
             success = v == expectedPath[vertexIdx]
         }
 
-        void postProcessVertex(Graph g, int v) {
+        void postProcessVertex(GraphTraversal traversal, int v) {
             success = v == expectedPath[vertexIdx]
             vertexIdx++
             edgeIdx = 0
         }
 
-        void processEdge(Graph g, int v1, int v2) {
+        void processEdge(GraphTraversal traversal, int v1, int v2) {
             success = expectedAdjacencyEdges[v1][edgeIdx] == v2
             edgeIdx++
             edgesCount++
-
-//            println "parent($v2): ${t.parentOf(v2)} ${t.parentOf(v2) == v1 ? "==" : "!="} v1: $v1"
         }
     }
 
