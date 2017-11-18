@@ -8,7 +8,7 @@ import java.util.Iterator;
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-public class DepthFirstTraversal extends AbstractGraphTraversal {
+public class DepthFirstTraversal extends AbstractDepthFirstTraversal {
 
     private Stack<Integer> stack;
 
@@ -30,6 +30,7 @@ public class DepthFirstTraversal extends AbstractGraphTraversal {
         while (stack.size() != 0) {
             int vertex = stack.pop();
 
+            iterateEntryTime(vertex);
             preProcessVertex(vertex);
             process(vertex);
 
@@ -40,6 +41,7 @@ public class DepthFirstTraversal extends AbstractGraphTraversal {
                 if (!isDiscovered(adjacencyVertex)) {
                     stack.push(adjacencyVertex);
 
+                    iterateEntryTime(adjacencyVertex);
                     discover(adjacencyVertex);
                     setParent(adjacencyVertex, vertex);
                     processEdge(vertex, adjacencyVertex);
@@ -50,6 +52,7 @@ public class DepthFirstTraversal extends AbstractGraphTraversal {
             }
 
             postProcessVertex(vertex);
+            iterateExitTime(vertex);
         }
     }
 

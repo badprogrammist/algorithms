@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-public class DepthFirstRecursiveTraversal extends AbstractGraphTraversal {
+public class DepthFirstRecursiveTraversal extends AbstractDepthFirstTraversal {
 
     public DepthFirstRecursiveTraversal(Graph graph) {
         super(graph);
@@ -16,6 +16,7 @@ public class DepthFirstRecursiveTraversal extends AbstractGraphTraversal {
         discover(start);
 
         preProcessVertex(start);
+        iterateEntryTime(start);
 
         Iterator<Integer> adjacencyEdgesIterator = getGraph().getAdjacentEdgesIterator(start);
         while (adjacencyEdgesIterator.hasNext()) {
@@ -32,6 +33,7 @@ public class DepthFirstRecursiveTraversal extends AbstractGraphTraversal {
         }
 
         postProcessVertex(start);
+        iterateExitTime(start);
         process(start);
     }
 

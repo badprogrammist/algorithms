@@ -8,7 +8,6 @@ import spock.lang.Specification
  */
 class DepthFirstRecursiveTraversalTest extends Specification {
 
-
     def "Test of traversing through graph by depth-first traverse algorithm"() {
         given: "Some undirected graph"
         def graph = GraphBuilder.adjacencyList(false)
@@ -23,6 +22,12 @@ class DepthFirstRecursiveTraversalTest extends Specification {
 
 
         when: "Trying to traverse through graph"
+        int start = 0
+        int[] expectedPath = [0, 4, 3, 2, 1, 5]
+        List<Map> expectedAdjacencyEdges = [[0: 4], [4: 3], [3: 4],
+                                            [3: 2], [2: 3], [2: 1],
+                                            [1: 4], [1: 2], [1: 0],
+                                            [4: 0], [0: 5], [5: 0]]
         def t = new DepthFirstRecursiveTraversal(graph)
         def tch = new TraverseChecker(expectedPath: expectedPath, expectedAdjacencyEdges: expectedAdjacencyEdges)
         t.setVertexPreProcessor { traversal, v -> tch.preProcessVertex(traversal, v) }
@@ -37,14 +42,17 @@ class DepthFirstRecursiveTraversalTest extends Specification {
         graph.getEdgesCount() == 7
 
         and: "The parent of vertex should equals expected"
+        Map expectedParents = [0: 0, 1: 2, 2: 3, 3: 4, 4: 0, 5: 0]
         checkParents(t, expectedParents)
 
-        where:
-        start | expectedPath       | expectedAdjacencyEdges   | expectedParents
-        0     | [0, 4, 3, 2, 1, 5] | [[0: 4], [4: 3], [3: 4],
-                                      [3: 2], [2: 3], [2: 1],
-                                      [1: 4], [1: 2], [1: 0],
-                                      [4: 0], [0: 5], [5: 0]] | [0: 0, 1: 2, 2: 3, 3: 4, 4: 0, 5: 0]
+        and: "The entry time should equals expected"
+        int[] expectedEntryTime = [1, 5, 4, 3, 2, 10]
+        checkTime(t, expectedEntryTime, true)
+
+        and: "The exit time should equals expected"
+        int[] expectedExitTime = [12, 6, 7, 8, 9, 11]
+        checkTime(t, expectedExitTime, false)
+
     }
 
     class TraverseChecker {
@@ -73,6 +81,21 @@ class DepthFirstRecursiveTraversalTest extends Specification {
         for (def entry : expectedParents.entrySet()) {
             if (t.parentOf(entry.getKey()) != entry.getValue()) {
                 return false
+            }
+        }
+        return true
+    }
+
+    boolean checkTime(AbstractDepthFirstTraversal t, int[] expected, boolean entry) {
+        for (int v = 0; v < expected.length; v++) {
+            if (entry) {
+                if (t.getEntryTime(v) != expected[v]) {
+                    return false
+                }
+            } else {
+                if (t.getExitTime(v) != expected[v]) {
+                    return false
+                }
             }
         }
         return true

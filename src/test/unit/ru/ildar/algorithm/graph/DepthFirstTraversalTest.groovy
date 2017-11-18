@@ -9,18 +9,11 @@ import spock.lang.Specification
 class DepthFirstTraversalTest extends Specification {
 
 
-    def "Test of traversing through cycled graph by depth-first traverse algorithm"() {
-        given: "Some undirected graph"
-        def graph = GraphBuilder.adjacencyList(false)
-                .edge(0, 1)
-                .edge(0, 5)
-                .edge(0, 4)
-                .edge(1, 2)
-                .edge(1, 4)
-                .edge(2, 3)
-                .edge(3, 4)
-                .create()
-
+    def "Test of traversing through graph by depth-first traverse algorithm"() {
+        given: "Some graph"
+        GraphBuilder gb = GraphBuilder.adjacencyList(false)
+        edges.each { edge -> gb.edge(edge[0], edge[1]) }
+        Graph graph = gb.create()
 
         when: "Trying to traverse through graph"
         def t = new DepthFirstTraversal(graph)
@@ -39,54 +32,19 @@ class DepthFirstTraversalTest extends Specification {
         and: "The parent of vertex should equals expected"
         checkParents(t, expectedParents)
 
-        where:
-        start | expectedPath       | expectedAdjacencyEdges | expectedParents
-        0     | [0, 1, 2, 3, 5, 4] | [0: [4, 5, 1] as int[],
-                                      1: [4, 2] as int[],
-                                      2: [3] as int[],
-                                      3: [4] as int[]]      | [1: 0, 2: 1, 3: 2, 4: 0, 5: 0]
-    }
+        and: "The entry time should equals expected"
+        checkTime(t, expectedEntryTime, true)
 
-    def "Test of traversing through acyclic graph by depth-first traverse algorithm"() {
-        given: "Some acyclic undirected graph"
-        def graph = GraphBuilder.adjacencyList(false)
-                .edge(0, 1)
-                .edge(1, 4)
-                .edge(1, 5)
-
-                .edge(0, 2)
-                .edge(2, 6)
-
-                .edge(0, 3)
-                .edge(3, 7)
-                .edge(3, 8)
-                .create()
-
-
-        when: "Trying to traverse through graph"
-        def t = new DepthFirstTraversal(graph)
-        def tch = new TraverseChecker(t: t, expectedPath: expectedPath, expectedAdjacencyEdges: expectedAdjacencyEdges)
-        t.setVertexPreProcessor { traversal, v -> tch.preProcessVertex(traversal, v) }
-        t.setVertexPostProcessor { traversal, v -> tch.postProcessVertex(traversal, v) }
-        t.setEdgeProcessor { traversal, v1, v2 -> tch.processEdge(traversal, v1, v2) }
-        t.traverse(start)
-
-        then: "The path of traversing graph and adjacency edges should equals expected"
-        tch.success
-
-        and: "The count of edges should equals expected"
-        tch.edgesCount == graph.getEdgesCount()
-
-        and: "The parent of vertex should equals expected"
-        checkParents(t, expectedParents)
+        and: "The exit time should equals expected"
+        checkTime(t, expectedExitTime, false)
 
         where:
-        start | expectedPath                | expectedAdjacencyEdges | expectedParents
-        0     | [0, 1, 4, 5, 2, 6, 3, 7, 8] | [0: [3, 2, 1] as int[],
-                                               1: [5, 4] as int[],
-                                               2: [6] as int[],
-                                               3: [8, 7] as int[]]   | [1: 0, 2: 0, 3: 0, 4: 1, 5: 1, 6: 2, 7: 3, 8: 3]
+        edges                                                            | start | expectedPath                | expectedAdjacencyEdges                       | expectedParents                                  | expectedEntryTime                           | expectedExitTime
+        [[0, 1], [0, 5], [0, 4], [1, 2], [1, 4], [2, 3], [3, 4]]         | 0     | [0, 1, 2, 3, 5, 4]          | [0: [4, 5, 1], 1: [4, 2], 2: [3], 3: [4]]    | [1: 0, 2: 1, 3: 2, 4: 0, 5: 0]                   | [1, 6, 9, 12, 16, 14] as int[]              | [5, 8, 11, 13, 17, 15] as int[]
+        [[0, 1], [1, 4], [1, 5], [0, 2], [2, 6], [0, 3], [3, 7], [3, 8]] | 0     | [0, 1, 4, 5, 2, 6, 3, 7, 8] | [0: [3, 2, 1], 1: [5, 4], 2: [6], 3: [8, 7]] | [1: 0, 2: 0, 3: 0, 4: 1, 5: 1, 6: 2, 7: 3, 8: 3] | [1, 6, 14, 19, 10, 12, 17, 23, 25] as int[] | [5, 9, 16, 22, 11, 13, 18, 24, 26] as int[]
+
     }
+
 
     class TraverseChecker {
 
@@ -120,6 +78,21 @@ class DepthFirstTraversalTest extends Specification {
         for (def entry : expectedParents.entrySet()) {
             if (t.parentOf(entry.getKey()) != entry.getValue()) {
                 return false
+            }
+        }
+        return true
+    }
+
+    boolean checkTime(AbstractDepthFirstTraversal t, int[] expected, boolean entry) {
+        for (int v = 0; v < expected.length; v++) {
+            if (entry) {
+                if (t.getEntryTime(v) != expected[v]) {
+                    return false
+                }
+            } else {
+                if (t.getExitTime(v) != expected[v]) {
+                    return false
+                }
             }
         }
         return true

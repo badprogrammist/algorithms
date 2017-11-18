@@ -17,7 +17,7 @@ public class LinkedStack<E> implements Stack<E> {
 
     @Override
     public void push(E data) {
-        if(head == null) {
+        if (head == null) {
             head = new Node(data, null);
         } else {
             head = new Node(data, head);
@@ -27,7 +27,7 @@ public class LinkedStack<E> implements Stack<E> {
 
     @Override
     public E pop() throws NoSuchElementException {
-        if(head == null) {
+        if (head == null) {
             throw new NoSuchElementException("Stack is empty");
         }
         E data = head.getData();
@@ -38,7 +38,7 @@ public class LinkedStack<E> implements Stack<E> {
 
     @Override
     public E peek() {
-        if(head != null) {
+        if (head != null) {
             return head.getData();
         }
         return null;
@@ -47,6 +47,22 @@ public class LinkedStack<E> implements Stack<E> {
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Node node = head;
+        while (node != null) {
+            sb.append(node.data);
+
+            if (node.prev != null) {
+                sb.append("->");
+            }
+
+            node = node.prev;
+        }
+        return sb.toString();
     }
 
     private class Node {

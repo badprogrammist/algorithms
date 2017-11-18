@@ -43,54 +43,42 @@ public abstract class AbstractGraphTraversal implements GraphTraversal {
     }
 
     protected void setParent(int vertex, int parent) {
-        if (vertex < 0 || vertex >= parents.length) {
-            throw new IllegalArgumentException("The vertex index is incorrect");
-        }
-
+        validateVertex(vertex);
         parents[vertex] = parent;
     }
 
     @Override
     public int parentOf(int vertex) throws IllegalArgumentException {
-        if (vertex < 0 || vertex >= parents.length) {
-            throw new IllegalArgumentException("The vertex index is incorrect");
-        }
-
+        validateVertex(vertex);
         return parents[vertex];
     }
 
     protected void discover(int vertex) {
-        if (vertex < 0 || vertex >= discovered.length) {
-            throw new IllegalArgumentException("The vertex index is incorrect");
-        }
-
+        validateVertex(vertex);
         discovered[vertex] = true;
     }
 
     protected void process(int vertex) {
-        if (vertex < 0 || vertex >= processed.length) {
-            throw new IllegalArgumentException("The vertex index is incorrect");
-        }
-
+        validateVertex(vertex);
         processed[vertex] = true;
     }
 
     @Override
     public boolean isDiscovered(int vertex) {
-        if (vertex < 0 || vertex >= discovered.length) {
-            throw new IllegalArgumentException("The vertex index is incorrect");
-        }
-
+        validateVertex(vertex);
         return discovered[vertex];
     }
 
     @Override
     public boolean isProcessed(int vertex) {
-        if (vertex < 0 || vertex >= processed.length) {
+        validateVertex(vertex);
+        return processed[vertex];
+    }
+
+    protected void validateVertex(int vertex) {
+        if (vertex < 0 || vertex >= getGraph().getVerticesCount()) {
             throw new IllegalArgumentException("The vertex index is incorrect");
         }
-
-        return processed[vertex];
     }
 
     @Override
