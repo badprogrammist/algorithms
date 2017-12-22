@@ -7,14 +7,9 @@ import spock.lang.Specification
  */
 class LinkedStackTest extends Specification {
 
-    LinkedStack<String> stack
-
-    def setup() {
-        stack = new LinkedStack()
-    }
-
     def "Test of adding and getting elements"() {
-        given: "Three elements"
+        given: "Stack of three elements"
+        LinkedStack<String> stack = new LinkedStack()
         def e1 = '1'
         def e2 = '2'
         def e3 = '3'
@@ -25,6 +20,8 @@ class LinkedStackTest extends Specification {
         stack.push(e3)
         then: "Size should equals three"
         stack.size() == 3
+        and: "The array of stack should equals expected"
+        stack.toArray() == ['3', '2', '1'] as String[]
 
         when: "Poll last element"
         def third = stack.pop()
@@ -52,6 +49,29 @@ class LinkedStackTest extends Specification {
         then: "NoSuchElementException is thrown"
         thrown(NoSuchElementException.class)
 
+    }
+
+    def "Test of reversing stack"() {
+        given: "Stack of five elements"
+        Stack<Integer> stack = new LinkedStack<>()
+        stack.push(1)
+        stack.push(2)
+        stack.push(3)
+        stack.push(4)
+        stack.push(5)
+
+        when: "Reverse stack"
+        stack.reverse()
+
+        then: "The size of stack should equals expected"
+        stack.size() == 5
+
+        and: "The order of elements should equals expected"
+        stack.pop() == 1
+        stack.pop() == 2
+        stack.pop() == 3
+        stack.pop() == 4
+        stack.pop() == 5
     }
 
 }

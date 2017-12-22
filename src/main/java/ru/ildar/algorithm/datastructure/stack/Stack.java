@@ -15,4 +15,8 @@ public interface Stack<E> {
 
     int size();
 
+    void reverse();
+
+    E[] toArray();
+
 }

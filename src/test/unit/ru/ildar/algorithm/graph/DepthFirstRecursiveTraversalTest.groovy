@@ -52,7 +52,6 @@ class DepthFirstRecursiveTraversalTest extends Specification {
         and: "The exit time should equals expected"
         int[] expectedExitTime = [12, 6, 7, 8, 9, 11]
         checkTime(t, expectedExitTime, false)
-
     }
 
     class TraverseChecker {
