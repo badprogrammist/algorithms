@@ -72,7 +72,7 @@ public class ArrayList<E> implements List<E> {
     public E[] toArray() {
         Object[] a = new Object[size()];
         for (int i = 0; i < size(); i++) {
-            a[i] = (E) array[i];
+            a[i] = array[i];
         }
         return (E[]) a;
     }
