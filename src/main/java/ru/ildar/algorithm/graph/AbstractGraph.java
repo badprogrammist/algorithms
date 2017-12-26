@@ -1,5 +1,7 @@
 package ru.ildar.algorithm.graph;
 
+import java.util.Iterator;
+
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
@@ -43,6 +45,23 @@ public abstract class AbstractGraph implements Graph {
         edgesCount++;
     }
 
+    @Override
+    public Graph reversed() {
+        Graph reversed = copyEmpty();
+
+        for (int v = 0; v < getVerticesCount(); v++) {
+            Iterator<Integer> iter = getAdjacentEdgesIterator(v);
+
+            while (iter.hasNext()) {
+                int adjacent = iter.next();
+                reversed.insertEdge(adjacent, v, 0.0);  // TODO copy weight too
+            }
+        }
+
+        return reversed;
+    }
+
+    protected abstract Graph copyEmpty();
     protected abstract void createEdge(int parent, int child, double weight);
 
     @Override

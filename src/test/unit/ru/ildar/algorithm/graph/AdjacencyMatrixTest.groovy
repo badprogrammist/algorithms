@@ -69,6 +69,33 @@ class AdjacencyMatrixTest extends Specification {
         checkAdjacentEdgesIterator(ae5, aei5)
     }
 
+    def "Test of reversing adjacency matrix"() {
+        given: "Some graph"
+        GraphBuilder gb = GraphBuilder.adjacencyMatrix(true)
+        edges.each { edge -> gb.edge(edge[0], edge[1]) }
+        Graph graph = gb.create()
+
+        when: "Trying to reversing graph"
+        Graph reversed = graph.reversed()
+
+        then: "Reversed graph should equals expected"
+        checkAdjacencyEdges(reversed, expectedAdjacencyEdges)
+
+        where:
+        edges                                            | expectedAdjacencyEdges
+        [[0, 1], [0, 2], [1, 3], [3, 4], [4, 2], [4, 1]] | [0: [], 1: [0, 4], 2: [0, 4], 3: [1], 4: [3]]
+    }
+
+    boolean checkAdjacencyEdges(Graph graph, Map<Integer, int[]> expectedAdjacencyEdges) {
+        for (int v = 0; v < graph.getVerticesCount(); v++) {
+            if (graph.getAdjacentEdges(v) != expectedAdjacencyEdges[v]) {
+                return false
+            }
+        }
+
+        return true
+    }
+
     boolean isArraysEquals(int[] a1, int[] a2) {
         if (a1.length != a2.length) {
             return false

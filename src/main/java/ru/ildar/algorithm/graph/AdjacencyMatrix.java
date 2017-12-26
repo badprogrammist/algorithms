@@ -62,6 +62,11 @@ public class AdjacencyMatrix extends AbstractGraph {
         return list.iterator();
     }
 
+    @Override
+    protected Graph copyEmpty() {
+        return new AdjacencyMatrix(getVerticesCount(), isDirected());
+    }
+
     private class Edge {
         boolean adjacent = false;
         double weight = 0;

@@ -7,7 +7,7 @@ import java.util.Iterator;
  */
 public class AdjacencyList extends AbstractGraph {
 
-    private EdgeNode[] edges;
+    private Edges edges;
 
     public AdjacencyList(int verticesCount, boolean directed) {
         super(verticesCount, directed);
@@ -15,27 +15,22 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     private void initEdges() {
-        edges = new EdgeNode[getVerticesCount()];
-        for (int i = 0; i < getVerticesCount(); i++) {
-            edges[i] = new EdgeNode(i, 0);
-        }
+        edges = new Edges();
+        edges.initEdges(getVerticesCount());
     }
 
     @Override
     protected void createEdge(int parent, int child, double weight) {
-        EdgeNode parentVertex = edges[parent];
-        EdgeNode childVertex = new EdgeNode(child, weight);
-        if (parentVertex.next != null) {
-            childVertex.next = parentVertex.next;
-        }
-        parentVertex.next = childVertex;
+        validateVertex(parent);
+        validateVertex(child);
+        edges.createEdge(parent, child, weight);
         incrementDegree(parent);
     }
 
     @Override
     public Iterator<Integer> getAdjacentEdgesIterator(int vertex) {
         validateVertex(vertex);
-        return edges[vertex].iterator();
+        return edges.getAdjacentEdgesIterator(vertex);
     }
 
     @Override
@@ -43,13 +38,42 @@ public class AdjacencyList extends AbstractGraph {
         validateVertex(vertex);
         int[] adjacentEdges = new int[getDegree(vertex)];
         int idx = 0;
-        EdgeNode edge = edges[vertex];
-        while (edge.next != null) {
-            adjacentEdges[idx] = edge.next.vertex;
-            edge = edge.next;
+        Iterator<Integer> iter = edges.getAdjacentEdgesIterator(vertex);
+        while (iter.hasNext()) {
+            adjacentEdges[idx] = iter.next();
             idx++;
         }
         return adjacentEdges;
+    }
+
+    @Override
+    protected Graph copyEmpty() {
+        return new AdjacencyList(getVerticesCount(), isDirected());
+    }
+
+    private class Edges {
+        private EdgeNode[] edges;
+
+        void initEdges(int verticesCount) {
+            edges = new EdgeNode[verticesCount];
+            for (int i = 0; i < getVerticesCount(); i++) {
+                edges[i] = new EdgeNode(i, 0);
+            }
+        }
+
+        void createEdge(int parent, int child, double weight) {
+            EdgeNode parentVertex = edges[parent];
+            EdgeNode childVertex = new EdgeNode(child, weight);
+            if (parentVertex.next != null) {
+                childVertex.next = parentVertex.next;
+            }
+            parentVertex.next = childVertex;
+        }
+
+        Iterator<Integer> getAdjacentEdgesIterator(int vertex) {
+            return edges[vertex].iterator();
+        }
+
     }
 
     private class EdgeNode implements Iterable<Integer> {
