@@ -1,7 +1,5 @@
 package ru.ildar.algorithm.graph;
 
-import ru.ildar.algorithm.datastructure.list.ArrayList;
-import ru.ildar.algorithm.datastructure.list.List;
 import ru.ildar.algorithm.datastructure.stack.LinkedStack;
 import ru.ildar.algorithm.datastructure.stack.Stack;
 
@@ -11,13 +9,10 @@ import ru.ildar.algorithm.datastructure.stack.Stack;
  * Implements Tarjan's strongly connected components algorithm (https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm)
  *
  */
-public class StronglyConnectedComponents {
-
-    private final static int NOT_ASSIGNED_COMPONENT = -1;
+public class StronglyConnectedComponentsTarjan extends AbstractStronglyConnectedComponents {
 
     private int[] low; // oldest vertex surely in component of v
-    private int[] scc; // strong component number for each vertex
-    private int componentsFound;
+
     private Stack<Integer> active;
     private DepthFirstRecursiveTraversal traversal;
 
@@ -31,15 +26,14 @@ public class StronglyConnectedComponents {
         }
     }
 
-    private void init(Graph graph) {
-        componentsFound = 0;
+    @Override
+    protected void init(Graph graph) {
+        super.init(graph);
         low = new int[graph.getVerticesCount()];
-        scc = new int[graph.getVerticesCount()];
         active = new LinkedStack<>();
 
         for (int i = 0; i < graph.getVerticesCount(); i++) {
             low[i] = i;
-            scc[i] = NOT_ASSIGNED_COMPONENT;
         }
 
         traversal = new DepthFirstRecursiveTraversal(graph);
@@ -62,7 +56,7 @@ public class StronglyConnectedComponents {
         }
         if (c == AbstractDepthFirstTraversal.EdgeClassification.CROSS) {
             // component not yet assigned
-            if (scc[v2] == NOT_ASSIGNED_COMPONENT) {
+            if (getComponent(v2) == NOT_ASSIGNED_COMPONENT) {
                 if (traversal.getEntryTime(v2) < traversal.getEntryTime(low[v1])) {
                     low[v1] = v2;
                 }
@@ -83,31 +77,17 @@ public class StronglyConnectedComponents {
     }
 
     private void popComponent(int v) {
-        componentsFound++;
-        scc[v] = componentsFound;
+        assign(v);
 
         int t = active.pop(); // vertex placeholder
         while (t != v) {
-            scc[t] = componentsFound;
+            assign(t);
             t = active.pop();
         }
+
+        incrementCurrentComponent();
     }
 
-    public int getComponents() {
-        return componentsFound;
-    }
-
-    public List<Integer> getComponent(int c) {
-        List<Integer> component = new ArrayList<>();
-
-        for (int i = 0; i < scc.length; i++) {
-            if (scc[i] == c + 1) {
-                component.add(i);
-            }
-        }
-
-        return component;
-    }
 
 }
 
