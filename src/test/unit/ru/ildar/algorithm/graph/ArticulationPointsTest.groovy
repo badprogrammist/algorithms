@@ -22,8 +22,8 @@ class ArticulationPointsTest extends Specification {
 
         where:
         edges                                    | start | expectedPoints
-//        [[0, 1], [1, 2], [2, 0], [0, 3], [3, 4]] | 0     | [0, 3] as int[]
-//        [[0, 1], [1, 2], [2, 3]]                 | 0     | [1, 2] as int[]
+        [[0, 1], [1, 2], [2, 0], [0, 3], [3, 4]] | 0     | [0, 3] as int[]
+        [[0, 1], [1, 2], [2, 3]]                 | 0     | [1, 2] as int[]
         [[0, 1], [0, 2], [2, 1], [1, 6], [1, 4],
          [4, 5], [5, 3], [3, 1]]                 | 0     | [1] as int[]
     }
