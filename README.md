@@ -7,7 +7,7 @@
 6. BinarySearchTree
 7. BinarySearchTree (without link to parent)
 
-[Tasks](src/datastructure/tasks)
+[Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/datastructure/tasks)
  
 ## Sorting
 1. Heap sorting
@@ -15,7 +15,7 @@
 3. Merge sorting
 4. Quick sorting
 
-[Tasks](src/sort/tasks)
+[Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/sort/tasks)
 
 ## Searching
 1. Binary searching
@@ -34,4 +34,4 @@
 12. Strongly connected components (Kosaraju algorithm)
 13. Strongly connected components (Tarjan algorithm)
 
-[Tasks](src/graph/tasks)
+[Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
