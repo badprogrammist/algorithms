@@ -1,4 +1,4 @@
-package ru.ildar.algorithm.sort;
+package ru.ildar.algorithm.sort.tasks;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)

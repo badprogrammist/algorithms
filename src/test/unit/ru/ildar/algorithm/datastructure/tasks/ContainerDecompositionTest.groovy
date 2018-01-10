@@ -1,5 +1,6 @@
-package ru.ildar.algorithm.datastructure
+package ru.ildar.algorithm.datastructure.tasks
 
+import ru.ildar.algorithm.datastructure.tasks.ContainerDecomposition
 import spock.lang.Specification
 
 /**

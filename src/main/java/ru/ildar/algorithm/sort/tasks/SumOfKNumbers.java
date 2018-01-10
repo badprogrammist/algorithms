@@ -1,6 +1,7 @@
-package ru.ildar.algorithm.sort;
+package ru.ildar.algorithm.sort.tasks;
 
-import java.math.BigInteger;
+import ru.ildar.algorithm.sort.QuickSorter;
+import ru.ildar.algorithm.sort.tasks.FindSummands;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)

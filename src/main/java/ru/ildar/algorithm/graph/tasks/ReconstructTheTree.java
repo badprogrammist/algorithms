@@ -21,9 +21,9 @@ public class ReconstructTheTree {
 
     private boolean[] discovered;
 
-    private Map<Integer, Integer> inOrderIndex;
+    private int[] inOrderIndex;
 
-    public Graph reconstcruct(int[] inOrder, int[] preOrder) {
+    public Graph reconstruct(int[] inOrder, int[] preOrder) {
         init(inOrder, preOrder);
         process(0, inOrder.length - 1, -1);
         return graphBuilder.create();
@@ -31,13 +31,12 @@ public class ReconstructTheTree {
 
     private void process(int start, int end, int lastRoot) {
         int root = getRoot();
-        int rootIndex = inOrderIndex.get(root);
+        int rootIndex = inOrderIndex[root];
         incrementPreOrderCursor();
 
         if (lastRoot != -1) {
             graphBuilder.edge(lastRoot, root);
         }
-
 
         if (!discovered[rootIndex]) {
             discovered[rootIndex] = true;
@@ -47,20 +46,7 @@ public class ReconstructTheTree {
             int leftIndex = rootIndex - 1;
             int rightIndex = rootIndex + 1;
 
-//            if (lengthOfLeftSubTree >= 3) {
-//                process(start, rootIndex);
-//            } else if (lengthOfLeftSubTree == 1 && !discovered[leftIndex]) {
-//                graphBuilder.edge(root, inOrder[leftIndex]);
-//                discovered[leftIndex] = true;
-//            }
             processSubTree(lengthOfLeftSubTree, start, rootIndex - 1, root, leftIndex);
-
-//            if (lengthOfRightSubTree >= 3) {
-//                process(rootIndex, end);
-//            } else if (lengthOfRightSubTree == 1 && !discovered[rightIndex]) {
-//                graphBuilder.edge(root, inOrder[rightIndex]);
-//                discovered[rightIndex] = true;
-//            }
             processSubTree(lengthOfRightSubTree, rootIndex + 1, end, root, rightIndex);
 
         }
@@ -80,7 +66,6 @@ public class ReconstructTheTree {
         }
     }
 
-
     private int getRoot() {
         int root = preOrder[preOrderCursor];
         return root;
@@ -98,9 +83,9 @@ public class ReconstructTheTree {
 
         this.discovered = new boolean[inOrder.length];
 
-        inOrderIndex = new HashMap<>();
+        inOrderIndex = new int[inOrder.length];
         for (int i = 0; i < inOrder.length; i++) {
-            inOrderIndex.put(inOrder[i], i);
+            inOrderIndex[inOrder[i]] = i;
         }
 
     }

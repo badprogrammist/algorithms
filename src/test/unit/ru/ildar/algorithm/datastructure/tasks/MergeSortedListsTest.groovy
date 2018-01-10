@@ -1,5 +1,6 @@
-package ru.ildar.algorithm.datastructure.pyramid
+package ru.ildar.algorithm.datastructure.tasks
 
+import ru.ildar.algorithm.datastructure.tasks.MergeSortedLists
 import spock.lang.Specification
 
 /**

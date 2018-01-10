@@ -1,4 +1,4 @@
-package ru.ildar.algorithm.datastructure;
+package ru.ildar.algorithm.datastructure.tasks;
 
 import java.util.Arrays;
 

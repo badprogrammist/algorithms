@@ -1,4 +1,4 @@
-package ru.ildar.algorithm.datastructure.pyramid;
+package ru.ildar.algorithm.datastructure.heap;
 
 import ru.ildar.algorithm.datastructure.list.ArrayList;
 import ru.ildar.algorithm.datastructure.list.List;
@@ -8,19 +8,19 @@ import java.util.NoSuchElementException;
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-public class Pyramid<E extends Comparable<E>> {
+public class Heap<E extends Comparable<E>> {
 
     private List<E> array;
 
-    public Pyramid() {
+    public Heap() {
         array = new ArrayList<>();
     }
 
-    public Pyramid(int n) {
+    public Heap(int n) {
         array = new ArrayList<>(n);
     }
 
-    public Pyramid(E[] a) {
+    public Heap(E[] a) {
         array = new ArrayList<>(a.length);
         for(E e : a) {
             array.add(e);

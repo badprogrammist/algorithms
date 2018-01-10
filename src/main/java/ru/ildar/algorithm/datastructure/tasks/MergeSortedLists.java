@@ -1,5 +1,7 @@
-package ru.ildar.algorithm.datastructure.pyramid;
+package ru.ildar.algorithm.datastructure.tasks;
 
+
+import ru.ildar.algorithm.datastructure.heap.Heap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,15 +77,15 @@ public class MergeSortedLists {
 
         Map<Comparable, Integer> heads = new HashMap<>();
 
-        Pyramid<E> pyramid = new Pyramid<>(n);
+        Heap<E> heap = new Heap<>(n);
         for (int k = 0; k < lists.length; k++) {
             E e = lists[k][0];
             heads.put(e, k);
-            pyramid.add(e);
+            heap.add(e);
         }
 
         for (int i = 0; i < n; i++) {
-            Comparable min = pyramid.pollMin();
+            Comparable min = heap.pollMin();
             result[i] = min;
 
             int listIndex = heads.get(min);
@@ -105,7 +107,7 @@ public class MergeSortedLists {
             }
             if (e != null) {
                 heads.put(e, newListIndex);
-                pyramid.add(e);
+                heap.add(e);
                 seeks[newListIndex] = seeks[newListIndex] + 1;
             }
         }

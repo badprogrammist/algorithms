@@ -1,6 +1,7 @@
-package ru.ildar.algorithm.sort
+package ru.ildar.algorithm.sort.tasks
 
 import ru.ildar.algorithm.datastructure.list.List
+import ru.ildar.algorithm.sort.tasks.SetsUnion
 import spock.lang.Specification
 
 /**

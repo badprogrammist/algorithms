@@ -1,5 +1,6 @@
-package ru.ildar.algorithm.datastructure
+package ru.ildar.algorithm.datastructure.tasks
 
+import ru.ildar.algorithm.datastructure.tasks.BraceValidator
 import spock.lang.Specification
 
 /**

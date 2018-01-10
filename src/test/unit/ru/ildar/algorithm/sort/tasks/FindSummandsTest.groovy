@@ -1,5 +1,6 @@
-package ru.ildar.algorithm.sort
+package ru.ildar.algorithm.sort.tasks
 
+import ru.ildar.algorithm.sort.tasks.FindSummands
 import spock.lang.Specification
 
 /**

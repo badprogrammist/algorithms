@@ -1,7 +1,8 @@
-package ru.ildar.algorithm.sort;
+package ru.ildar.algorithm.sort.tasks;
 
 import ru.ildar.algorithm.datastructure.list.ArrayList;
 import ru.ildar.algorithm.datastructure.list.List;
+import ru.ildar.algorithm.sort.QuickSorter;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)

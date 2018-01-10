@@ -13,7 +13,7 @@ class ReconstructTheTreeTest extends Specification {
 
         when: "Trying to reconstruct binary tree"
         ReconstructTheTree rtt = new ReconstructTheTree()
-        Graph graph = rtt.reconstcruct(inOrder, preOrder)
+        Graph graph = rtt.reconstruct(inOrder, preOrder)
 
         then: "The count of vertices should equals expected"
         graph.getVerticesCount() == expectedVerticesCount

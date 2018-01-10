@@ -1,5 +1,6 @@
-package ru.ildar.algorithm.datastructure;
+package ru.ildar.algorithm.datastructure.tasks;
 
+import ru.ildar.algorithm.datastructure.Iterator;
 import ru.ildar.algorithm.datastructure.list.ArrayList;
 import ru.ildar.algorithm.datastructure.list.List;
 import ru.ildar.algorithm.datastructure.queue.PriorityQueue;

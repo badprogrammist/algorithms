@@ -1,23 +1,23 @@
-package ru.ildar.algorithm.datastructure.pyramid
+package ru.ildar.algorithm.datastructure.heap
 
 import spock.lang.Specification
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-class PyramidTest extends Specification {
+class HeapTest extends Specification {
 
     def "Test of adding and getting element from pyramid"() {
         given: "An array of elements"
         int[] elements = [1945, 1804, 1941, 1865, 1918, 2001, 1963, 1783, 1776, 1492]
 
         and: "Pyramid structure"
-        Pyramid<Integer> p = new Pyramid<>()
+        Heap<Integer> p = new Heap<>()
 
         when: "Add elements"
         elements.each { p.add(it) }
 
-        then: "The size of the pyramid should be equal 10"
+        then: "The size of the heap should be equal 10"
         p.size() == 10
 
         when: "Polling min elements to array"
@@ -33,7 +33,7 @@ class PyramidTest extends Specification {
         min[8] = p.pollMin()
         min[9] = p.pollMin()
 
-        then: "The size of the pyramid should be equal 0"
+        then: "The size of the heap should be equal 0"
         p.size() == 0
 
         and: "The array of min elements in ascending order"

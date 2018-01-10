@@ -1,5 +1,6 @@
-package ru.ildar.algorithm.sort
+package ru.ildar.algorithm.sort.tasks
 
+import ru.ildar.algorithm.sort.tasks.SumOfKNumbers
 import spock.lang.Specification
 
 /**
