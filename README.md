@@ -20,7 +20,7 @@
 ## Searching
 1. Binary searching
 
-## Graph
+## Graph Traversal
 1. Adjacency List structure
 2. Adjacency Matrix structure
 3. Breadth First Searching
@@ -35,3 +35,15 @@
 13. Strongly connected components (Tarjan algorithm)
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
+
+## Weighted Graph Algorithm
+TODO
+
+## Combinatorial Search and Heuristics Methods
+TODO
+
+## Dynamic Programming
+TODO
+
+## Intractable Problems and Approximations Algorithms
+TODO
