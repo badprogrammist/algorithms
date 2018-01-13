@@ -1,5 +1,7 @@
 package ru.ildar.algorithm.graph;
 
+import java.util.Iterator;
+
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
@@ -18,6 +20,28 @@ public class GraphConverter {
         }
 
         return list;
+    }
+
+    public static IncidenceMatrix toIncidenceMatrix(Graph list) {
+        IncidenceMatrix matrix = new IncidenceMatrix(
+                list.getVerticesCount(),
+                list.getEdgesCount(),
+                list.isDirected());
+        boolean[] discovered = new boolean[list.getVerticesCount()];
+
+        for (int i = 0; i < list.getVerticesCount(); i++) {
+            discovered[i] = true;
+            Iterator<Integer> iter = list.getAdjacentVerticesIterator(i);
+
+            while(iter.hasNext()) {
+                int adjacent = iter.next();
+                if ((!list.isDirected() && !discovered[adjacent]) || list.isDirected()) {
+                    matrix.insertEdge(i, adjacent, 0); // TODO copy weight
+                }
+            }
+        }
+
+        return matrix;
     }
 
 }

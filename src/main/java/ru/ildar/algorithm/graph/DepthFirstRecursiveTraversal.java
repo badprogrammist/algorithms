@@ -18,7 +18,7 @@ public class DepthFirstRecursiveTraversal extends AbstractDepthFirstTraversal {
         preProcessVertex(start);
         iterateEntryTime(start);
 
-        Iterator<Integer> adjacencyEdgesIterator = getGraph().getAdjacentEdgesIterator(start);
+        Iterator<Integer> adjacencyEdgesIterator = getGraph().getAdjacentVerticesIterator(start);
         while (adjacencyEdgesIterator.hasNext()) {
             int adjacencyVertex = adjacencyEdgesIterator.next();
 

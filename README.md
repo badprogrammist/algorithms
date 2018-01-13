@@ -35,6 +35,7 @@
 12. Strongly connected components (Kosaraju algorithm)
 13. Strongly connected components (Tarjan algorithm)
 14. Converting from Adjacency Matrix into Adjacency List
+15. Converting from Adjacency List into Incidence Matrix
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
 

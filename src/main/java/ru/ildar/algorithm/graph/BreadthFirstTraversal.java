@@ -33,7 +33,7 @@ public class BreadthFirstTraversal extends AbstractGraphTraversal {
             preProcessVertex(vertex);
             process(vertex);
 
-            Iterator<Integer> edges = getGraph().getAdjacentEdgesIterator(vertex);
+            Iterator<Integer> edges = getGraph().getAdjacentVerticesIterator(vertex);
             while (edges.hasNext()) {
                 int adjacencyVertex = edges.next();
 

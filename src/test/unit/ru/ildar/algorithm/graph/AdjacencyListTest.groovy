@@ -53,12 +53,12 @@ class AdjacencyListTest extends Specification {
         isArraysEquals([0] as int[], ae5)
 
         when: "Getting adjacency edges iterator"
-        def aei0 = g.getAdjacentEdgesIterator(0)
-        def aei1 = g.getAdjacentEdgesIterator(1)
-        def aei2 = g.getAdjacentEdgesIterator(2)
-        def aei3 = g.getAdjacentEdgesIterator(3)
-        def aei4 = g.getAdjacentEdgesIterator(4)
-        def aei5 = g.getAdjacentEdgesIterator(5)
+        def aei0 = g.getAdjacentVerticesIterator(0)
+        def aei1 = g.getAdjacentVerticesIterator(1)
+        def aei2 = g.getAdjacentVerticesIterator(2)
+        def aei3 = g.getAdjacentVerticesIterator(3)
+        def aei4 = g.getAdjacentVerticesIterator(4)
+        def aei5 = g.getAdjacentVerticesIterator(5)
 
         then:
         checkAdjacentEdgesIterator(ae0, aei0)

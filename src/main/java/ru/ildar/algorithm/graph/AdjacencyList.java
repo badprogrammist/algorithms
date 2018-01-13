@@ -28,7 +28,7 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     @Override
-    public Iterator<Integer> getAdjacentEdgesIterator(int vertex) {
+    public Iterator<Integer> getAdjacentVerticesIterator(int vertex) {
         validateVertex(vertex);
         return edges.getAdjacentEdgesIterator(vertex);
     }

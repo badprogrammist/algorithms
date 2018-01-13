@@ -24,7 +24,7 @@ public interface Graph {
 
     void validateVertex(int vertex) throws IllegalArgumentException;
 
-    Iterator<Integer> getAdjacentEdgesIterator(int vertex);
+    Iterator<Integer> getAdjacentVerticesIterator(int vertex);
 
     Graph reversed();
 }

@@ -50,7 +50,7 @@ public abstract class AbstractGraph implements Graph {
         Graph reversed = copyEmpty();
 
         for (int v = 0; v < getVerticesCount(); v++) {
-            Iterator<Integer> iter = getAdjacentEdgesIterator(v);
+            Iterator<Integer> iter = getAdjacentVerticesIterator(v);
 
             while (iter.hasNext()) {
                 int adjacent = iter.next();
