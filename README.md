@@ -33,6 +33,7 @@
 11. Topological sorting
 12. Strongly connected components (Kosaraju algorithm)
 13. Strongly connected components (Tarjan algorithm)
+14. Converting from Adjacency Matrix into Adjacency List
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
 

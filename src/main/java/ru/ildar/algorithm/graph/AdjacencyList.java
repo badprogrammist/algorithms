@@ -47,6 +47,18 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     @Override
+    public boolean isAdjacent(int v1, int v2) {
+        Iterator<Integer> iter = edges.getAdjacentEdgesIterator(v1);
+        while (iter.hasNext()) {
+            int adjacentVertex = iter.next();
+            if (adjacentVertex == v2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     protected Graph copyEmpty() {
         return new AdjacencyList(getVerticesCount(), isDirected());
     }

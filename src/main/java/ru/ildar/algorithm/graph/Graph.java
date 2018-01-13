@@ -20,6 +20,8 @@ public interface Graph {
 
     int[] getAdjacentEdges(int vertex);
 
+    boolean isAdjacent(int v1, int v2);
+
     void validateVertex(int vertex) throws IllegalArgumentException;
 
     Iterator<Integer> getAdjacentEdgesIterator(int vertex);

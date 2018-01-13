@@ -53,6 +53,11 @@ public class AdjacencyMatrix extends AbstractGraph {
     }
 
     @Override
+    public boolean isAdjacent(int v1, int v2) {
+        return matrix[v1][v2].adjacent;
+    }
+
+    @Override
     public Iterator<Integer> getAdjacentEdgesIterator(int vertex) {
         int[] adjacentEdges = getAdjacentEdges(vertex);
         List<Integer> list = new ArrayList<>();
