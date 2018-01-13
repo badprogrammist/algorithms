@@ -23,11 +23,12 @@
 ## Graph Traversal
 1. Adjacency List structure
 2. Adjacency Matrix structure
-3. Breadth First Searching
-4. Depth First Searching (recursive)
-5. Depth First Searching (with stack)
-6. Colorizing vertices algorithm
-7. Finding articulation points
+3. Incidence Matrix structure
+4. Breadth First Searching
+5. Depth First Searching (recursive)
+6. Depth First Searching (with stack)
+7. Colorizing vertices algorithm
+8. Finding articulation points
 9. Finding connected components
 10. Finding cycles
 11. Topological sorting

@@ -92,4 +92,8 @@ public abstract class AbstractGraph implements Graph {
     public int getEdgesCount() {
         return edgesCount;
     }
+
+    protected void setEdgesCount(int edgesCount) {
+        this.edgesCount = edgesCount;
+    }
 }

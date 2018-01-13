@@ -34,7 +34,7 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     @Override
-    public int[] getAdjacentEdges(int vertex) {
+    public int[] getAdjacentVertices(int vertex) {
         validateVertex(vertex);
         int[] adjacentEdges = new int[getDegree(vertex)];
         int idx = 0;

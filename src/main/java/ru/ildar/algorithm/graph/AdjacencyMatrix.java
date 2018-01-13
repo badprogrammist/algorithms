@@ -36,7 +36,7 @@ public class AdjacencyMatrix extends AbstractGraph {
     }
 
     @Override
-    public int[] getAdjacentEdges(int vertex) {
+    public int[] getAdjacentVertices(int vertex) {
         validateVertex(vertex);
 
         int[] adjacentEdges = new int[getDegree(vertex)];
@@ -59,7 +59,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 
     @Override
     public Iterator<Integer> getAdjacentEdgesIterator(int vertex) {
-        int[] adjacentEdges = getAdjacentEdges(vertex);
+        int[] adjacentEdges = getAdjacentVertices(vertex);
         List<Integer> list = new ArrayList<>();
         for (int adjacentEdge : adjacentEdges) {
             list.add(adjacentEdge);

@@ -36,12 +36,12 @@ class AdjacencyListTest extends Specification {
         degree5 == 1
 
         when: "Getting adjacency edges"
-        def ae0 = g.getAdjacentEdges(0)
-        def ae1 = g.getAdjacentEdges(1)
-        def ae2 = g.getAdjacentEdges(2)
-        def ae3 = g.getAdjacentEdges(3)
-        def ae4 = g.getAdjacentEdges(4)
-        def ae5 = g.getAdjacentEdges(5)
+        def ae0 = g.getAdjacentVertices(0)
+        def ae1 = g.getAdjacentVertices(1)
+        def ae2 = g.getAdjacentVertices(2)
+        def ae3 = g.getAdjacentVertices(3)
+        def ae4 = g.getAdjacentVertices(4)
+        def ae5 = g.getAdjacentVertices(5)
 
         then: "The adjacency edges should equals expected"
 
@@ -88,7 +88,7 @@ class AdjacencyListTest extends Specification {
 
     boolean checkAdjacencyEdges(Graph graph, Map<Integer, int[]> expectedAdjacencyEdges) {
         for (int v = 0; v < graph.getVerticesCount(); v++) {
-            if (graph.getAdjacentEdges(v) != expectedAdjacencyEdges[v]) {
+            if (graph.getAdjacentVertices(v) != expectedAdjacencyEdges[v]) {
                 return false
             }
         }

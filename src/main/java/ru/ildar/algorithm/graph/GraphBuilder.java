@@ -18,6 +18,10 @@ public class GraphBuilder {
         return new GraphBuilder(AdjacencyType.MATRIX, directed);
     }
 
+    public static GraphBuilder incidenceMatrix(boolean directed) {
+        return new GraphBuilder(AdjacencyType.INCIDENCE, directed);
+    }
+
     private AdjacencyType adjacencyType;
     private boolean directed;
     private List<Edge> edges = new LinkedList<>();
@@ -52,6 +56,9 @@ public class GraphBuilder {
         if (adjacencyType == AdjacencyType.MATRIX) {
             graph = new AdjacencyMatrix(vertices.size(), directed);
         }
+        if (adjacencyType == AdjacencyType.INCIDENCE) {
+            graph = new IncidenceMatrix(vertices.size(), edges.size(), directed);
+        }
 
         if (graph != null) {
             for (Edge edge : edges) {
@@ -62,7 +69,7 @@ public class GraphBuilder {
     }
 
     enum AdjacencyType {
-        LIST, MATRIX
+        LIST, MATRIX, INCIDENCE
     }
 
     class Edge {

@@ -9,14 +9,14 @@ class GraphConverterTest extends Specification {
 
     def "Test of converting adjacent matrix into adjacent list"() {
         given: "Some directed graph"
-        GraphBuilder gb = GraphBuilder.adjacencyList(directed)
+        GraphBuilder gb = GraphBuilder.adjacencyMatrix(directed)
         edges.each { edge -> gb.edge(edge[0], edge[1]) }
         Graph matrix = gb.create()
 
         when: "Trying to adjacent matrix into adjacent list"
         Graph list = GraphConverter.toAdjacencyList(matrix)
 
-        then: "Reversed graph should equals expected"
+        then: "Converted graph should equals expected"
         checkAdjacencyEdges(list, expectedAdjacencyEdges)
 
         where:
@@ -28,9 +28,7 @@ class GraphConverterTest extends Specification {
 
     boolean checkAdjacencyEdges(Graph graph, Map<Integer, int[]> expectedAdjacencyEdges) {
         for (int v = 0; v < graph.getVerticesCount(); v++) {
-            println(v)
-            println(graph.getAdjacentEdges(v))
-            if (graph.getAdjacentEdges(v) != expectedAdjacencyEdges[v]) {
+            if (graph.getAdjacentVertices(v) != expectedAdjacencyEdges[v]) {
                 return false
             }
         }

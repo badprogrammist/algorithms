@@ -32,7 +32,7 @@ class ReconstructTheTreeTest extends Specification {
 
     boolean checkAdjacencyEdges(Graph graph, Map<Integer, int[]> expectedAdjacencyEdges) {
         for (int v = 0; v < graph.getVerticesCount(); v++) {
-            if (graph.getAdjacentEdges(v) != expectedAdjacencyEdges[v]) {
+            if (graph.getAdjacentVertices(v) != expectedAdjacencyEdges[v]) {
                 return false
             }
         }

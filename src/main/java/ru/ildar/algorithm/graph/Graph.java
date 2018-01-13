@@ -18,7 +18,7 @@ public interface Graph {
 
     void insertEdge(int v1, int v2, double weight);
 
-    int[] getAdjacentEdges(int vertex);
+    int[] getAdjacentVertices(int vertex);
 
     boolean isAdjacent(int v1, int v2);
 
