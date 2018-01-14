@@ -9,28 +9,20 @@ import java.util.List;
  */
 public class IncidenceMatrix extends AbstractGraph {
 
-    private double[] weights;
-    private int[][] matrix;
+    private Edge[] edges;
     private int edgeCursor;
 
     public IncidenceMatrix(int verticesCount, int edgesCount, boolean directed) {
         super(verticesCount, directed);
         setEdgesCount(edgesCount);
-        initMatrix();
-        initWeights();
+        initEdges();
         edgeCursor = 0;
     }
 
-    private void initMatrix() {
-        matrix = new int[getVerticesCount()][getEdgesCount()];
-        for (int i = 0; i < getVerticesCount(); i++) {
-            matrix[i] = new int[getEdgesCount()];
-        }
+    private void initEdges() {
+        edges = new Edge[getEdgesCount()];
     }
 
-    private void initWeights() {
-        weights = new double[getEdgesCount()];
-    }
 
     @Override
     public void insertEdge(int v1, int v2, double weight) {
@@ -45,14 +37,11 @@ public class IncidenceMatrix extends AbstractGraph {
     @Override
     protected void createEdge(int parent, int child, double weight) {
         incrementDegree(parent);
-        if (isDirected()) {
-            matrix[parent][edgeCursor] = -1;
-        } else {
-            matrix[parent][edgeCursor] = 1;
+        edges[edgeCursor] = new Edge(parent, child, weight);
+
+        if (!isDirected()) {
             incrementDegree(child);
         }
-        matrix[child][edgeCursor] = 1;
-        weights[edgeCursor] = weight;
     }
 
     @Override
@@ -63,22 +52,37 @@ public class IncidenceMatrix extends AbstractGraph {
         int idx = 0;
 
         for (int j = 0; j < getEdgesCount(); j++) {
-            int incidence = matrix[vertex][j];
-            if ((isDirected() && incidence == -1) || (!isDirected() && incidence == 1)) {
-                for (int i = 0; i < getVerticesCount(); i++) {
-                    if (i != vertex && matrix[i][j] == 1) {
-                        adjacentEdges[idx] = i;
-                        idx++;
-                    }
-                }
+            Edge edge = edges[j];
+
+            if (edge.getParent() == vertex) {
+                adjacentEdges[idx] = edge.getChild();
+                idx++;
+            } else if (!isDirected() && edge.getChild() == vertex) {
+                adjacentEdges[idx] = edge.getParent();
+                idx++;
             }
         }
         return adjacentEdges;
     }
 
+
     @Override
     public boolean isAdjacent(int v1, int v2) {
+        for (int j = 0; j < getEdgesCount(); j++) {
+            Edge edge = edges[j];
+
+            if (edge.getParent() == v1 && edge.getChild() == v2) {
+                return true;
+            }
+            if (edge.getParent() == v2 && edge.getChild() == v1) {
+                return true;
+            }
+        }
         return false;
+    }
+
+    public Edge getEdge(int edgeIndex) {
+        return edges[edgeIndex];
     }
 
     @Override
@@ -101,4 +105,29 @@ public class IncidenceMatrix extends AbstractGraph {
             throw new IllegalArgumentException("The count of edges has increased");
         }
     }
+
+    public class Edge {
+        private int parent;
+        private int child;
+        private double weight;
+
+        public Edge(int parent, int child, double weight) {
+            this.parent = parent;
+            this.child = child;
+            this.weight = weight;
+        }
+
+        public int getParent() {
+            return parent;
+        }
+
+        public int getChild() {
+            return child;
+        }
+
+        public double getWeight() {
+            return weight;
+        }
+    }
+
 }

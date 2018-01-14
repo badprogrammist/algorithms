@@ -16,6 +16,9 @@ class IncidenceMatrixTest extends Specification {
         then: "Converted graph should equals expected"
         checkAdjacencyEdges(matrix, expectedAdjacencyEdges)
 
+        and: "Check adjacency vertices"
+        checkAdjacencies(edges, matrix)
+
         where:
         edges                                                            | directed | expectedAdjacencyEdges
         [[0, 1], [0, 2], [1, 2], [1, 3], [1, 4], [2, 3], [3, 4]]         | false    | [0: [1, 2], 1: [0, 2, 3, 4], 2: [0, 1, 3], 3: [1, 2, 4], 4: [1, 3]] as Map<Integer, int[]>
@@ -26,6 +29,16 @@ class IncidenceMatrixTest extends Specification {
     boolean checkAdjacencyEdges(Graph graph, Map<Integer, int[]> expectedAdjacencyEdges) {
         for (int v = 0; v < graph.getVerticesCount(); v++) {
             if (graph.getAdjacentVertices(v) != expectedAdjacencyEdges[v]) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    boolean checkAdjacencies(List<List<Integer>> edges, Graph matrix) {
+        for(List<Integer> edge : edges) {
+            if (!matrix.isAdjacent(edge.get(0), edge.get(1))) {
                 return false
             }
         }

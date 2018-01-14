@@ -7,7 +7,7 @@ import java.util.Iterator;
  */
 public class GraphConverter {
 
-    public static AdjacencyList toAdjacencyList(Graph matrix) {
+    public static AdjacencyList toAdjacencyList(AdjacencyMatrix matrix) {
         AdjacencyList list = new AdjacencyList(matrix.getVerticesCount(), matrix.isDirected());
 
         for (int i = 0; i < matrix.getVerticesCount(); i++) {
@@ -22,7 +22,7 @@ public class GraphConverter {
         return list;
     }
 
-    public static IncidenceMatrix toIncidenceMatrix(Graph list) {
+    public static IncidenceMatrix toIncidenceMatrix(AdjacencyList list) {
         IncidenceMatrix matrix = new IncidenceMatrix(
                 list.getVerticesCount(),
                 list.getEdgesCount(),
@@ -43,5 +43,17 @@ public class GraphConverter {
 
         return matrix;
     }
+
+    public static AdjacencyList toAdjacencyList(IncidenceMatrix matrix) {
+        AdjacencyList list = new AdjacencyList(matrix.getVerticesCount(), matrix.isDirected());
+
+        for (int j = 0; j < matrix.getEdgesCount(); j++) {
+            IncidenceMatrix.Edge edge = matrix.getEdge(j);
+            list.insertEdge(edge.getParent(), edge.getChild(), edge.getWeight());
+        }
+
+        return list;
+    }
+
 
 }
