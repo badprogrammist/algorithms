@@ -37,6 +37,8 @@
 14. Converting from Adjacency Matrix into Adjacency List
 15. Converting from Adjacency List into Incidence Matrix
 16. Converting from Incidence Matrix into Adjacency List
+17. Calculating square of directed graph for Adjacency Matrix
+18. Calculating square of directed graph for Adjacency List
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
 

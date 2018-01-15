@@ -86,6 +86,23 @@ class AdjacencyListTest extends Specification {
         [[0, 1], [0, 2], [1, 3], [3, 4], [4, 2], [4, 1]] | [0: [], 1: [4, 0], 2: [4, 0], 3: [1], 4: [3]]
     }
 
+    def "Test of squaring adjacency matrix"() {
+        given: "Some graph"
+        GraphBuilder gb = GraphBuilder.adjacencyList(true)
+        edges.each { edge -> gb.edge(edge[0], edge[1]) }
+        Graph graph = gb.create()
+
+        when: "Trying to square graph"
+        Graph squared = graph.square()
+
+        then: "Squared graph should equals expected"
+        checkAdjacencyEdges(squared, expectedAdjacencyEdges)
+
+        where:
+        edges                                                    | expectedAdjacencyEdges
+        [[1, 0], [3, 0], [3, 1], [3, 2], [4, 5], [5, 3], [3, 4]] | [0: [], 1: [], 2: [], 3: [5], 4: [3], 5: [0, 1, 2, 4]]
+    }
+
     boolean checkAdjacencyEdges(Graph graph, Map<Integer, int[]> expectedAdjacencyEdges) {
         for (int v = 0; v < graph.getVerticesCount(); v++) {
             if (graph.getAdjacentVertices(v) != expectedAdjacencyEdges[v]) {

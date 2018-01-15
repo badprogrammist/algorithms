@@ -27,4 +27,6 @@ public interface Graph {
     Iterator<Integer> getAdjacentVerticesIterator(int vertex);
 
     Graph reversed();
+
+    Graph square();
 }

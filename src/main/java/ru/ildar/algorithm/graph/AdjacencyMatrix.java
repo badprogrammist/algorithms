@@ -36,6 +36,31 @@ public class AdjacencyMatrix extends AbstractGraph {
     }
 
     @Override
+    public Graph square() {
+        AdjacencyMatrix squared = new AdjacencyMatrix(getVerticesCount(), isDirected());
+        for (int i = 0; i < getVerticesCount(); i++) {
+            if (getDegree(i) == 0) {
+                continue;
+            }
+            for (int j = 0; j < getVerticesCount(); j++) {
+                if (isAdjacent(i, j)) {
+                    if (getDegree(j) == 0) {
+                        continue;
+                    }
+
+                    for (int k = 0; k < getVerticesCount(); k++) {
+                        if (isAdjacent(j, k) && !isAdjacent(i, k)) {
+                            squared.insertEdge(i, k, 0.0); // TODO calculate weight
+                        }
+                    }
+                }
+            }
+        }
+
+        return squared;
+    }
+
+    @Override
     public int[] getAdjacentVertices(int vertex) {
         validateVertex(vertex);
 

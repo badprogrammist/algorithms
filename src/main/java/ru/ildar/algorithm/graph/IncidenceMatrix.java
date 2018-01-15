@@ -45,6 +45,11 @@ public class IncidenceMatrix extends AbstractGraph {
     }
 
     @Override
+    public Graph square() {
+        throw new UnsupportedOperationException("There is no implementation for that operation");
+    }
+
+    @Override
     public int[] getAdjacentVertices(int vertex) {
         validateVertex(vertex);
 

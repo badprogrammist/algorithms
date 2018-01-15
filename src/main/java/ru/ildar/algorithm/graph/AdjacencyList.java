@@ -28,6 +28,34 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     @Override
+    public Graph square() {
+        AdjacencyList squared = new AdjacencyList(getVerticesCount(), isDirected());
+        for (int i = 0; i < getVerticesCount(); i++) {
+            if (getDegree(i) == 0) {
+                continue;
+            }
+
+            Iterator<Integer> iAdjacentIter = getAdjacentVerticesIterator(i);
+            while(iAdjacentIter.hasNext()) {
+                int j = iAdjacentIter.next();
+
+                if (getDegree(j) != 0) {
+                    Iterator<Integer> jAdjacentIter = getAdjacentVerticesIterator(j);
+
+                    while(jAdjacentIter.hasNext()) {
+                        int k = jAdjacentIter.next();
+
+                        if (isAdjacent(j, k) && !isAdjacent(i, k)) {
+                            squared.insertEdge(i, k, 0.0); // TODO calculate weight
+                        }
+                    }
+                }
+            }
+        }
+        return squared;
+    }
+
+    @Override
     public Iterator<Integer> getAdjacentVerticesIterator(int vertex) {
         validateVertex(vertex);
         return edges.getAdjacentEdgesIterator(vertex);
