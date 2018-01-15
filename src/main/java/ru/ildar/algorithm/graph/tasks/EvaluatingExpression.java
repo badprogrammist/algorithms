@@ -14,6 +14,14 @@ import java.util.function.BiFunction;
  *         For example, the expression 2 + 3 ∗ 4 + (3 ∗ 4)/5 is represented by the tree in Figure 5.17(a).
  *         Give an O(n) algorithm for evaluating such an expression, where there are n nodes in the tree.
  *         </p>
+ *         <p>
+ *         <p>
+ *         5-10. [5] Suppose an arithmetic expression is given as a DAG (directed acyclic graph)
+ *         with common subexpressions removed. Each leaf is an integer and each internal
+ *         node is one of the standard arithmetical operations (+,−,∗,/).
+ *         Give an O(n + m) algorithm for evaluating such a DAG, where there are n nodes and m edges in the DAG.
+ *         Hint: modify an algorithm for the tree case to achieve the desired efficiency.
+ *         </p>
  */
 public class EvaluatingExpression {
 
