@@ -22,51 +22,38 @@ public class VertexCover {
     private int coverSize;
 
     public void findVerticesCover(Graph graph) {
-        DepthFirstRecursiveTraversal traversal = new DepthFirstRecursiveTraversal(graph);
-        initWeights(graph);
 
-        if (!graph.isDirected()) {
-            traversal.setEdgeProcessor((tr, v1, v2) -> {
-                AbstractDepthFirstTraversal.EdgeClassification edgeClass = traversal.getEdgeClassification(v1, v2);
-
-                if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.TREE) {
-                    if (graph.getDegree(v2) > 1) {
-                        decreaseWeight(v1);
-                    }
-                }
-                if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.BACK) {
-                    int threshold = graph.isDirected() ? 0 : 1;
-
-                    if (graph.getDegree(v1) == threshold) {
-                        decreaseWeight(v1);
-                    }
-                }
-            });
+        if (graph.isDirected()) {
+            throw new IllegalArgumentException("The graph should be undirected");
         }
+        initWeights(graph);
+        DepthFirstRecursiveTraversal traversal = new DepthFirstRecursiveTraversal(graph);
+
+        traversal.setEdgeProcessor((tr, v1, v2) -> {
+            AbstractDepthFirstTraversal.EdgeClassification edgeClass = traversal.getEdgeClassification(v1, v2);
+
+            if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.BACK) {
+                if (weights[v1] == 0 && graph.getDegree(v1) == 1) {
+                    increaseWeight(v2);
+                }
+            }
+        });
 
         traversal.traverse(0);
     }
 
-    private void decreaseWeight(int vertex) {
-        weights[vertex]--;
-
+    private void increaseWeight(int vertex) {
         if (weights[vertex] == 0) {
-            coverSize--;
+            coverSize++;
+            weights[vertex] = 1;
         }
+
+        weights[vertex]++;
     }
 
     private void initWeights(Graph graph) {
         weights = new int[graph.getVerticesCount()];
-        coverSize = graph.getVerticesCount();
-
-        for (int i = 0; i < graph.getVerticesCount(); i++) {
-            int degree = graph.getDegree(i);
-            weights[i] = degree;
-
-            if (graph.isDirected() && degree == 0) {
-                coverSize--;
-            }
-        }
+        coverSize = 0;
     }
 
     public int[] getVerticesCover() {

@@ -11,7 +11,7 @@ class VertexCoverTest extends Specification {
 
     def "Test of finding a minimum-size vertex cover"() {
         given: "Some graph"
-        GraphBuilder gb = GraphBuilder.adjacencyList(directed)
+        GraphBuilder gb = GraphBuilder.adjacencyList(false)
         edges.each { edge -> gb.edge(edge[0], edge[1]) }
         Graph graph = gb.create()
 
@@ -27,11 +27,10 @@ class VertexCoverTest extends Specification {
 
 
         where:
-        edges                                              | directed | expectedVerticesCover    | expectedVerticesCoverWeight
+        edges                                                    | expectedVerticesCover | expectedVerticesCoverWeight
         [[0, 1], [0, 2], [0, 3], [1, 4], [2, 5],
-         [2, 6], [5, 11], [5, 10], [3, 7], [3, 8], [3, 9]] | false    | [1, 2, 3, 5] as int[]    | [1: 2, 2: 2, 3: 4, 5: 3]
-        [[0, 1], [0, 2], [0, 3], [1, 4], [2, 5],
-         [2, 6], [5, 11], [5, 10], [3, 7], [3, 8], [3, 9]] | true     | [0, 1, 2, 3, 5] as int[] | [0: 3, 1: 1, 2: 2, 3: 3, 5: 2]
+         [2, 6], [5, 11], [5, 10], [3, 7], [3, 8], [3, 9]]       | [1, 2, 3, 5] as int[] | [1: 2, 2: 2, 3: 4, 5: 3]
+        [[0, 1], [0, 2], [1, 3], [1, 4], [3, 6], [3, 7], [4, 5]] | [0, 3, 4] as int[]    | [0: 2, 3: 3, 4: 2]
     }
 
     boolean checkWeights(VertexCover vertexCover, Map<Integer, Integer> expectedVerticesCoverWeight) {
