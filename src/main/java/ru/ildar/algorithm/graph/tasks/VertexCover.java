@@ -18,14 +18,19 @@ import ru.ildar.algorithm.graph.Graph;
  */
 public class VertexCover {
 
-    private int[] weights;
+    private int[] weights; // the amount of covered edges
     private int coverSize;
 
-    public void findVerticesCover(Graph graph) {
-
+    /**
+     * (a) Give an efficient algorithm to find a minimum-size vertex cover if G is a tree.
+     *
+     * @param graph
+     */
+    public void findMinVerticesCover(Graph graph) {
         if (graph.isDirected()) {
             throw new IllegalArgumentException("The graph should be undirected");
         }
+
         initWeights(graph);
         DepthFirstRecursiveTraversal traversal = new DepthFirstRecursiveTraversal(graph);
 
@@ -34,7 +39,12 @@ public class VertexCover {
 
             if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.BACK) {
                 if (weights[v1] == 0 && graph.getDegree(v1) == 1) {
-                    increaseWeight(v2);
+                    if (weights[v2] == 0) {
+                        coverSize++;
+                        weights[v2] = 1;
+                    }
+
+                    weights[v2]++;
                 }
             }
         });
@@ -42,14 +52,42 @@ public class VertexCover {
         traversal.traverse(0);
     }
 
-    private void increaseWeight(int vertex) {
-        if (weights[vertex] == 0) {
-            coverSize++;
-            weights[vertex] = 1;
+    /**
+     * (b) Let G = (V,E) be a tree such that the weight of each vertex is equal to the degree of that vertex.
+     * Give an efficient algorithm to find a minimum-weight vertex cover of G.
+     *
+     * @param graph
+     */
+    public void findMinWeightedVerticesCover(Graph graph) {
+        if (graph.isDirected()) {
+            throw new IllegalArgumentException("The graph should be undirected");
         }
 
-        weights[vertex]++;
+        initWeights(graph);
+
+        DepthFirstRecursiveTraversal traversal = new DepthFirstRecursiveTraversal(graph);
+
+        traversal.setEdgeProcessor((tr, v1, v2) -> {
+            AbstractDepthFirstTraversal.EdgeClassification edgeClass = traversal.getEdgeClassification(v1, v2);
+
+            if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.TREE) {
+                if (weights[v1] == 0) {
+                    weights[v1] = graph.getDegree(v1);
+                    coverSize++;
+                    weights[v2] = -1;
+                } else if (weights[v1] < 0) {
+                    weights[v2] = graph.getDegree(v2);
+                    coverSize++;
+                } else if (weights[v1] > 0) {
+                    weights[v2] = -1;
+                }
+            }
+        });
+
+        traversal.traverse(0);
+
     }
+
 
     private void initWeights(Graph graph) {
         weights = new int[graph.getVerticesCount()];
