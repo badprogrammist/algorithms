@@ -1,9 +1,6 @@
 package ru.ildar.algorithm.graph;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
@@ -26,6 +23,7 @@ public class GraphBuilder {
     private boolean directed;
     private List<Edge> edges = new LinkedList<>();
     private Set<Integer> vertices = new HashSet<>();
+    private Map<Integer, Double> vertexWeight = new HashMap<>();
 
     public GraphBuilder(AdjacencyType adjacencyType, boolean directed) {
         this.adjacencyType = adjacencyType;
@@ -41,6 +39,10 @@ public class GraphBuilder {
         vertices.add(v1);
         vertices.add(v2);
         return this;
+    }
+
+    public void setVertexWeight(int vertex, double weight) {
+        vertexWeight.put(vertex, weight);
     }
 
     public Graph create() {
@@ -63,6 +65,10 @@ public class GraphBuilder {
         if (graph != null) {
             for (Edge edge : edges) {
                 graph.insertEdge(edge.v1, edge.v2, edge.weight);
+            }
+
+            for (Map.Entry<Integer, Double> entry : vertexWeight.entrySet()) {
+                graph.setVertexWeight(entry.getKey(), entry.getValue());
             }
         }
         return graph;

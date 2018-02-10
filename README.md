@@ -40,6 +40,8 @@
 17. Calculating square of directed graph for Adjacency Matrix
 18. Calculating square of directed graph for Adjacency List
 19. Finding minimum vertex cover of a tree
+20. Finding minimum vertex cover of a tree such that the weight of each vertex is equal to the degree of that vertex
+21. Finding minimum vertex cover of a tree with arbitrary weights associated with the vertices
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
 

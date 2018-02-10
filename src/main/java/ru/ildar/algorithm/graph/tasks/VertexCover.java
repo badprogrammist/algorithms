@@ -18,7 +18,7 @@ import ru.ildar.algorithm.graph.Graph;
  */
 public class VertexCover {
 
-    private int[] weights; // the amount of covered edges
+    private int[] coveredEdges; // the amount of covered edges
     private int coverSize;
 
     /**
@@ -31,20 +31,20 @@ public class VertexCover {
             throw new IllegalArgumentException("The graph should be undirected");
         }
 
-        initWeights(graph);
+        initCoveredEdges(graph);
         DepthFirstRecursiveTraversal traversal = new DepthFirstRecursiveTraversal(graph);
 
         traversal.setEdgeProcessor((tr, v1, v2) -> {
             AbstractDepthFirstTraversal.EdgeClassification edgeClass = traversal.getEdgeClassification(v1, v2);
 
             if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.BACK) {
-                if (weights[v1] == 0 && graph.getDegree(v1) == 1) {
-                    if (weights[v2] == 0) {
+                if (coveredEdges[v1] == 0 && graph.getDegree(v1) == 1) {
+                    if (coveredEdges[v2] == 0) {
                         coverSize++;
-                        weights[v2] = 1;
+                        coveredEdges[v2] = 1;
                     }
 
-                    weights[v2]++;
+                    coveredEdges[v2]++;
                 }
             }
         });
@@ -58,12 +58,12 @@ public class VertexCover {
      *
      * @param graph
      */
-    public void findMinWeightedVerticesCover(Graph graph) {
+    public void findDegreeWeightedVerticesCover(Graph graph) {
         if (graph.isDirected()) {
             throw new IllegalArgumentException("The graph should be undirected");
         }
 
-        initWeights(graph);
+        initCoveredEdges(graph);
 
         DepthFirstRecursiveTraversal traversal = new DepthFirstRecursiveTraversal(graph);
 
@@ -71,26 +71,73 @@ public class VertexCover {
             AbstractDepthFirstTraversal.EdgeClassification edgeClass = traversal.getEdgeClassification(v1, v2);
 
             if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.TREE) {
-                if (weights[v1] == 0) {
-                    weights[v1] = graph.getDegree(v1);
+                if (coveredEdges[v1] == 0) {
+                    coveredEdges[v1] = graph.getDegree(v1);
                     coverSize++;
-                    weights[v2] = -1;
-                } else if (weights[v1] < 0) {
-                    weights[v2] = graph.getDegree(v2);
+                    coveredEdges[v2] = -1;
+                } else if (coveredEdges[v1] < 0) {
+                    coveredEdges[v2] = graph.getDegree(v2);
                     coverSize++;
-                } else if (weights[v1] > 0) {
-                    weights[v2] = -1;
+                } else if (coveredEdges[v1] > 0) {
+                    coveredEdges[v2] = -1;
                 }
             }
         });
 
         traversal.traverse(0);
+    }
 
+    /**
+     * (c) Let G = (V, E) be a tree with arbitrary coveredEdges associated with the vertices.
+     * Give an efficient algorithm to find a minimum-weight vertex cover of G.
+     *
+     * @param graph
+     */
+    public void findRandomWeightedVerticesCover(Graph graph) {
+        if (graph.isDirected()) {
+            throw new IllegalArgumentException("The graph should be undirected");
+        }
+
+        initCoveredEdges(graph);
+
+        DepthFirstRecursiveTraversal traversal = new DepthFirstRecursiveTraversal(graph);
+
+        traversal.setEdgeProcessor((tr, v1, v2) -> {
+            AbstractDepthFirstTraversal.EdgeClassification edgeClass = traversal.getEdgeClassification(v1, v2);
+
+            if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.TREE) {
+                if (graph.getVertexWeight(v1) < graph.getVertexWeight(v2)) {
+                    coveredEdges[v1]++;
+                } else {
+                    coveredEdges[v2]++;
+                }
+            }
+
+            if (edgeClass == AbstractDepthFirstTraversal.EdgeClassification.BACK) {
+                if (coveredEdges[v1] > 0 && coveredEdges[v2] > 0) {
+                    if (coveredEdges[v1] > coveredEdges[v2]) {
+                        coveredEdges[v1]++;
+                        coveredEdges[v2]--;
+                    } else {
+                        coveredEdges[v2]++;
+                        coveredEdges[v1]--;
+                    }
+                }
+            }
+        });
+
+        traversal.setVertexPostProcessor((tr, v) -> {
+            if (coveredEdges[v] > 0) {
+                coverSize++;
+            }
+        });
+
+        traversal.traverse(0);
     }
 
 
-    private void initWeights(Graph graph) {
-        weights = new int[graph.getVerticesCount()];
+    private void initCoveredEdges(Graph graph) {
+        coveredEdges = new int[graph.getVerticesCount()];
         coverSize = 0;
     }
 
@@ -98,8 +145,8 @@ public class VertexCover {
         int[] cover = new int[getVerticesCoverSize()];
 
         int idx = 0;
-        for (int i = 0; i < weights.length; i++) {
-            if (weights[i] > 0) {
+        for (int i = 0; i < coveredEdges.length; i++) {
+            if (coveredEdges[i] > 0) {
                 cover[idx] = i;
                 idx++;
             }
@@ -108,8 +155,8 @@ public class VertexCover {
         return cover;
     }
 
-    public int getVertexWeight(int vertex) {
-        return weights[vertex];
+    public int getVertexCoveredEdges(int vertex) {
+        return coveredEdges[vertex];
     }
 
     public int getVerticesCoverSize() {

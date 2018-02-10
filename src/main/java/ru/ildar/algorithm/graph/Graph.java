@@ -26,6 +26,10 @@ public interface Graph {
 
     Iterator<Integer> getAdjacentVerticesIterator(int vertex);
 
+    void setVertexWeight(int vertex, double weight);
+
+    double getVertexWeight(int vertex);
+
     Graph reversed();
 
     Graph square();

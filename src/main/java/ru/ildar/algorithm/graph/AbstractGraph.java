@@ -13,11 +13,14 @@ public abstract class AbstractGraph implements Graph {
 
     private int[] degrees;
 
+    private double[] vertexWeight;
+
     public AbstractGraph(int verticesCount,  boolean directed) {
         this.verticesCount = verticesCount;
         this.edgesCount = 0;
         this.directed = directed;
         initDegrees();
+        initVerticesWeights();
     }
 
     private void initDegrees() {
@@ -25,6 +28,10 @@ public abstract class AbstractGraph implements Graph {
         for (int i = 0; i < verticesCount; i++) {
             degrees[i] = 0;
         }
+    }
+
+    private void initVerticesWeights() {
+        vertexWeight = new double[verticesCount];
     }
 
     protected void incrementDegree(int vertex) {
@@ -75,6 +82,18 @@ public abstract class AbstractGraph implements Graph {
     public int getDegree(int vertex) {
         validateVertex(vertex);
         return degrees[vertex];
+    }
+
+    @Override
+    public void setVertexWeight(int vertex, double weight) {
+        validateVertex(vertex);
+        vertexWeight[vertex] = weight;
+    }
+
+    @Override
+    public double getVertexWeight(int vertex) {
+        validateVertex(vertex);
+        return vertexWeight[vertex];
     }
 
     @Override
