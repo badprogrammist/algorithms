@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 public class VertexCover {
     private static VertexCoverAlgorithm vertexCoverOfNotWeightedTree = new VertexCoverOfNotWeightedTree();
-    private static VertexCoverAlgorithm vertexcoverOfDegreeWeightedTree = new VertexcoverOfDegreeWeightedTree();
+    private static VertexCoverAlgorithm vertexCoverOfDegreeWeightedTree = new VertexCoverOfDegreeWeightedTree();
     private static VertexCoverAlgorithm vertexCoverOfRandomWeightedTree = new VertexCoverOfRandomWeightedTree();
 
     public static VertexCoverAlgorithm findVertexCoverOfNotWeightedTree(Graph graph) {
@@ -17,9 +17,9 @@ public class VertexCover {
         return vertexCoverOfNotWeightedTree;
     }
 
-    public static VertexCoverAlgorithm findVertexcoverOfDegreeWeightedTree(Graph graph) {
-        vertexcoverOfDegreeWeightedTree.find(graph);
-        return vertexcoverOfDegreeWeightedTree;
+    public static VertexCoverAlgorithm findVertexCoverOfDegreeWeightedTree(Graph graph) {
+        vertexCoverOfDegreeWeightedTree.find(graph);
+        return vertexCoverOfDegreeWeightedTree;
     }
 
     public static VertexCoverAlgorithm findVertexCoverOfRandomWeightedTree(Graph graph) {
@@ -126,7 +126,7 @@ public class VertexCover {
      * Give an efficient algorithm to find a minimum-weight vertex cover of G.
      * </p>
      */
-    private static class VertexcoverOfDegreeWeightedTree extends VertexCoverOfTree {
+    private static class VertexCoverOfDegreeWeightedTree extends VertexCoverOfTree {
 
         @Override
         public void find(Graph graph) {

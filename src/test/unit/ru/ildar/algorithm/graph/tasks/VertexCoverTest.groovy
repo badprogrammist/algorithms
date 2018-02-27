@@ -41,7 +41,7 @@ class VertexCoverTest extends Specification {
         Graph graph = gb.create()
 
         when: "Trying to find a minimum-weighted vertex cover"
-        VertexCover.VertexCoverAlgorithm vc = VertexCover.findVertexcoverOfDegreeWeightedTree(graph)
+        VertexCover.VertexCoverAlgorithm vc = VertexCover.findVertexCoverOfDegreeWeightedTree(graph)
 
         then: "Found vertices cover should equals expected"
         vc.getVerticesCover() == expectedVerticesCover
