@@ -21,7 +21,7 @@ class ArrayListTest extends Specification {
         list.add(e2)
         list.add(e3)
 
-        then: "Size of list should be equaled three"
+        then: "Size of line should be equaled three"
         list.size() == 3
 
         and: "Indexes of elements should be equaled to adding order"
@@ -37,7 +37,7 @@ class ArrayListTest extends Specification {
         when: "Remove first elements"
         list.remove(0)
 
-        then: "Size of list should be equaled two"
+        then: "Size of line should be equaled two"
         list.size() == 2
 
         and: "Check elements indexes"
