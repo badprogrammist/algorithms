@@ -28,6 +28,11 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     @Override
+    public double getEdgeWeight(int v1, int v2) {
+        return edges.getWeight(v1, v2);
+    }
+
+    @Override
     public Graph square() {
         AdjacencyList squared = new AdjacencyList(getVerticesCount(), isDirected());
         for (int i = 0; i < getVerticesCount(); i++) {
@@ -58,7 +63,7 @@ public class AdjacencyList extends AbstractGraph {
     @Override
     public Iterator<Integer> getAdjacentVerticesIterator(int vertex) {
         validateVertex(vertex);
-        return edges.getAdjacentEdgesIterator(vertex);
+        return edges.getAdjacentVerticesIterator(vertex);
     }
 
     @Override
@@ -66,7 +71,7 @@ public class AdjacencyList extends AbstractGraph {
         validateVertex(vertex);
         int[] adjacentEdges = new int[getDegree(vertex)];
         int idx = 0;
-        Iterator<Integer> iter = edges.getAdjacentEdgesIterator(vertex);
+        Iterator<Integer> iter = edges.getAdjacentVerticesIterator(vertex);
         while (iter.hasNext()) {
             adjacentEdges[idx] = iter.next();
             idx++;
@@ -76,7 +81,7 @@ public class AdjacencyList extends AbstractGraph {
 
     @Override
     public boolean isAdjacent(int v1, int v2) {
-        Iterator<Integer> iter = edges.getAdjacentEdgesIterator(v1);
+        Iterator<Integer> iter = edges.getAdjacentVerticesIterator(v1);
         while (iter.hasNext()) {
             int adjacentVertex = iter.next();
             if (adjacentVertex == v2) {
@@ -110,13 +115,31 @@ public class AdjacencyList extends AbstractGraph {
             parentVertex.next = childVertex;
         }
 
-        Iterator<Integer> getAdjacentEdgesIterator(int vertex) {
-            return edges[vertex].iterator();
+        Iterator<Integer> getAdjacentVerticesIterator(int vertex) {
+            return edges[vertex].vertexIterator();
+        }
+
+        Iterator<EdgeNode> getAdjacentNodesIterator(int vertex) {
+            return edges[vertex].nodeIterator();
+        }
+
+        double getWeight(int v1, int v2) {
+            Iterator<EdgeNode> iter = getAdjacentNodesIterator(v1);
+
+            while (iter.hasNext()) {
+                EdgeNode adjacentNode = iter.next();
+
+                if (adjacentNode.vertex == v2) {
+                    return adjacentNode.weight;
+                }
+            }
+
+            return -1;
         }
 
     }
 
-    private class EdgeNode implements Iterable<Integer> {
+    private class EdgeNode {
 
         double weight;
         int vertex;
@@ -128,17 +151,20 @@ public class AdjacencyList extends AbstractGraph {
             this.vertex = vertex;
         }
 
-        @Override
-        public Iterator<Integer> iterator() {
-            return new EdgeNodeIterator(this);
+        public Iterator<Integer> vertexIterator() {
+            return new VertexIterator(this);
+        }
+
+        public Iterator<EdgeNode> nodeIterator() {
+            return new NodeIterator(this);
         }
     }
 
-    private class EdgeNodeIterator implements Iterator<Integer> {
+    private class NodeIterator implements Iterator<EdgeNode> {
 
         private EdgeNode node;
 
-        EdgeNodeIterator(EdgeNode node) {
+        NodeIterator(EdgeNode node) {
             this.node = node;
         }
 
@@ -147,6 +173,26 @@ public class AdjacencyList extends AbstractGraph {
             return node.next != null;
         }
 
+        @Override
+        public EdgeNode next() {
+            node = node.next;
+            return node;
+        }
+
+    }
+
+    private class VertexIterator implements Iterator<Integer> {
+
+        private EdgeNode node;
+
+        VertexIterator(EdgeNode node) {
+            this.node = node;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return node.next != null;
+        }
         @Override
         public Integer next() {
             node = node.next;

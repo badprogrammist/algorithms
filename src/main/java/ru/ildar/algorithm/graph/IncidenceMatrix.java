@@ -45,6 +45,19 @@ public class IncidenceMatrix extends AbstractGraph {
     }
 
     @Override
+    public double getEdgeWeight(int v1, int v2) {
+        for (int j = 0; j < getEdgesCount(); j++) {
+            Edge edge = edges[j];
+
+            if ((edge.getParent() == v1 && edge.getChild() == v2)
+                    || (edge.getParent() == v2 && edge.getChild() == v1)) {
+                return edge.getWeight();
+            }
+        }
+        return -1;
+    }
+
+    @Override
     public Graph square() {
         throw new UnsupportedOperationException("There is no implementation for that operation");
     }

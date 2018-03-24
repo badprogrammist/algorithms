@@ -36,6 +36,17 @@ public class AdjacencyMatrix extends AbstractGraph {
     }
 
     @Override
+    public double getEdgeWeight(int v1, int v2) {
+        Edge edge = matrix[v1][v2];
+
+        if (edge != null) {
+            return edge.weight;
+        } else {
+            return -1;
+        }
+    }
+
+    @Override
     public Graph square() {
         AdjacencyMatrix squared = new AdjacencyMatrix(getVerticesCount(), isDirected());
         for (int i = 0; i < getVerticesCount(); i++) {

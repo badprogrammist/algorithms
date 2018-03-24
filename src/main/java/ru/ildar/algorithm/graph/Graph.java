@@ -30,6 +30,8 @@ public interface Graph {
 
     double getVertexWeight(int vertex);
 
+    double getEdgeWeight(int v1, int v2);
+
     Graph reversed();
 
     Graph square();

@@ -41,6 +41,7 @@ public class BreadthFirstTraversal extends AbstractGraphTraversal {
 
                     processEdge(vertex, adjacencyVertex);
                 }
+
                 if (!isDiscovered(adjacencyVertex)) {
                     queue.add(adjacencyVertex);
 

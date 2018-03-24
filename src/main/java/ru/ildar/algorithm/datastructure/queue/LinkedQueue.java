@@ -63,6 +63,24 @@ public class LinkedQueue<E> implements Queue<E> {
         return size;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Node node = head;
+
+        while (node != null) {
+            sb.append(node.data);
+
+            if (node.prev != null) {
+                sb.append("<-");
+            }
+
+            node = node.prev;
+        }
+
+        return sb.toString();
+    }
+
     private class Node {
         private E data;
         private Node prev;
