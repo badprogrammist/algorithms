@@ -44,6 +44,7 @@
 21. Finding minimum vertex cover of a tree with arbitrary weights associated with the vertices
 22. Finding maximum independent set of a tree
 23. Prim's algorithm of finding min spanning tree
+24. Kruskal's algorithm of finding min spanning tree
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
 
