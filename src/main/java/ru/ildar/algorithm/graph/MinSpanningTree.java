@@ -1,5 +1,6 @@
 package ru.ildar.algorithm.graph;
 
+import ru.ildar.algorithm.datastructure.UnionFind;
 import ru.ildar.algorithm.datastructure.queue.PriorityQueue;
 import ru.ildar.algorithm.datastructure.queue.TreePriorityQueue;
 
@@ -90,14 +91,11 @@ public class MinSpanningTree {
 
     }
 
-    public static class KruskalsAlgorithm implements Algorithm {
-
-        private Graph graph;
+    private abstract static class AbstractKruskalsAlgorithm implements Algorithm {
+        protected Graph graph;
         private Graph tree;
-        private int[] components;
 
         private PriorityQueue<Edge> queue;
-
 
 
         @Override
@@ -116,23 +114,9 @@ public class MinSpanningTree {
 
         }
 
-        private void tree(Edge edge) {
-            tree.insertEdge(edge.v1, edge.v2, edge.weight);
-        }
-
-        private void merge(int v1, int v2) {
-            int changeComponent = components[v2];
-            int toComponent = components[v1];
-
-            for (int v = 0; v < components.length; v++) {
-                if (components[v] == changeComponent) {
-                    components[v] = toComponent;
-                }
-            }
-        }
-
-        private boolean isSameComponent(int v1, int v2) {
-            return components[v1] == components[v2];
+        protected void init(Graph graph) {
+            this.graph = graph;
+            this.tree = new AdjacencyList(graph.getVerticesCount(), false);
         }
 
         private void buildQueue() {
@@ -149,15 +133,14 @@ public class MinSpanningTree {
             traversal.traverse(0);
         }
 
-        private void init(Graph graph) {
-            this.graph = graph;
-            this.tree = new AdjacencyList(graph.getVerticesCount(), false);
-            components = new int[graph.getVerticesCount()];
-
-            for(int v = 0; v < graph.getVerticesCount(); v++) {
-                components[v] = v;
-            }
+        private void tree(Edge edge) {
+            tree.insertEdge(edge.v1, edge.v2, edge.weight);
         }
+
+        abstract protected void merge(int v1, int v2);
+
+        abstract protected boolean isSameComponent(int v1, int v2);
+
 
         @Override
         public Graph getTree() {
@@ -179,6 +162,61 @@ public class MinSpanningTree {
             public int compareTo(Edge o) {
                 return Double.compare(this.weight, o.weight);
             }
+        }
+    }
+
+    public static class KruskalsAlgorithm extends AbstractKruskalsAlgorithm {
+
+        private int[] components;
+
+        @Override
+        protected void init(Graph graph) {
+            super.init(graph);
+            components = new int[graph.getVerticesCount()];
+
+            for(int v = 0; v < graph.getVerticesCount(); v++) {
+                components[v] = v;
+            }
+        }
+
+        @Override
+        protected void merge(int v1, int v2) {
+            int changeComponent = components[v2];
+            int toComponent = components[v1];
+
+            for (int v = 0; v < components.length; v++) {
+                if (components[v] == changeComponent) {
+                    components[v] = toComponent;
+                }
+            }
+        }
+
+        @Override
+        protected boolean isSameComponent(int v1, int v2) {
+            return components[v1] == components[v2];
+        }
+
+
+    }
+
+    public static class UnionFindKruskalsAlgorithm extends AbstractKruskalsAlgorithm {
+
+        private UnionFind components;
+
+        @Override
+        protected void init(Graph graph) {
+            super.init(graph);
+            components = new UnionFind(graph.getVerticesCount());
+        }
+
+        @Override
+        protected void merge(int v1, int v2) {
+            components.union(v1, v2);
+        }
+
+        @Override
+        protected boolean isSameComponent(int v1, int v2) {
+            return components.isConnect(v1, v2);
         }
 
     }
