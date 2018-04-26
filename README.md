@@ -44,7 +44,6 @@
 20. Finding minimum vertex cover of a tree such that the weight of each vertex is equal to the degree of that vertex
 21. Finding minimum vertex cover of a tree with arbitrary weights associated with the vertices
 22. Finding maximum independent set of a tree
-23. Dijkstra's Algorithm of finding shortest path of a graph
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/graph/tasks)
 
@@ -52,6 +51,8 @@
 1. Prim's algorithm of finding min spanning tree
 2. Kruskal's algorithm of finding min spanning tree
 3. Kruskal's algorithm of finding min spanning tree that uses union-find structure
+4. Dijkstra's Algorithm of finding shortest path of a graph
+5. Floyd-Warshall algorithm of finding all-pairs shortest path of a graph
 
 ## Combinatorial Search and Heuristics Methods
 TODO

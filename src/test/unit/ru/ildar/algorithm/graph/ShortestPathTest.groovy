@@ -12,7 +12,6 @@ class ShortestPathTest extends Specification {
         GraphBuilder gb = GraphBuilder.adjacencyList(false)
         edges.each { edge, weight -> gb.edge(edge[0], edge[1], weight) }
         Graph graph = gb.create()
-        and: "And vertices that point the from and the to it should find the path"
 
         when: "Trying to find shortest path"
         ShortestPath.Algorithm algorithm = new ShortestPath.DijkstrasAlgoritm()
