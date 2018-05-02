@@ -30,9 +30,11 @@ public class LinkedStack<E> implements Stack<E> {
         if (head == null) {
             throw new NoSuchElementException("Stack is empty");
         }
+
         E data = head.getData();
         head = head.getPrev();
         size--;
+
         return data;
     }
 
@@ -57,6 +59,13 @@ public class LinkedStack<E> implements Stack<E> {
                 n2 = x;
             }
             head = n1;
+        }
+    }
+
+    @Override
+    public void clear() {
+        while (size() != 0) {
+            pop();
         }
     }
 

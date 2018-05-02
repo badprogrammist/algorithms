@@ -53,6 +53,7 @@
 3. Kruskal's algorithm of finding min spanning tree that uses union-find structure
 4. Dijkstra's Algorithm of finding shortest path of a graph
 5. Floyd-Warshall algorithm of finding all-pairs shortest path of a graph
+6. Ford-Fulkerson algorithm of finding maximum flow
 
 ## Combinatorial Search and Heuristics Methods
 TODO
