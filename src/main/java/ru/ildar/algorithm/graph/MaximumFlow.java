@@ -1,7 +1,9 @@
 package ru.ildar.algorithm.graph;
 
-import ru.ildar.algorithm.datastructure.stack.LinkedStack;
-import ru.ildar.algorithm.datastructure.stack.Stack;
+import ru.ildar.algorithm.datastructure.Iterator;
+import ru.ildar.algorithm.datastructure.list.LinkedList;
+import ru.ildar.algorithm.datastructure.queue.LinkedQueue;
+import ru.ildar.algorithm.datastructure.queue.Queue;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
@@ -18,143 +20,164 @@ public class MaximumFlow {
 
         private Graph graph;
         private int maxFlow = 0;
-        private double flows[][][];
         private int source;
         private int sink;
+
+        private Edge augmentingPath[];
+        private boolean inCut[]; // is a vertex reachable from source in residual network
+
+        private FlowNetwork flowNetwork;
 
         @Override
         public void find(Graph graph, int source, int sink) {
             this.graph = graph;
             this.source = source;
             this.sink = sink;
-            this.flows = new double[graph.getVerticesCount()][graph.getVerticesCount()][2];
-            initFlows(source);
 
-            findAugmentingPath();
+            initFlowNetwork();
+
+            while (calcAugmentingPath()) {
+                calcBottleneck();
+            }
+
         }
 
-        private void findAugmentingPath() {
+        private boolean calcAugmentingPath() {
+            augmentingPath = new Edge[graph.getVerticesCount()];
+            inCut = new boolean[graph.getVerticesCount()];
+
+            Queue<Integer> queue = new LinkedQueue<>();
+            queue.add(source);
+            inCut[source] = true;
+
+            while (queue.size() != 0) {
+                int vertex = queue.poll();
+                Iterator<Edge> iter = flowNetwork.getAdjacencyEdges(vertex);
+
+                while (iter.hasNext()) {
+                    Edge edge = iter.next();
+                    int otherVertex = edge.other(vertex);
+
+                    if (edge.getResidualFlow(otherVertex) > 0 && !inCut[otherVertex]) {
+                        augmentingPath[otherVertex] = edge;
+                        inCut[otherVertex] = true;
+                        queue.add(otherVertex);
+                    }
+                }
+            }
+
+            return inCut[sink];
+        }
+
+        private void calcBottleneck() {
             double bottleneck = Double.MAX_VALUE;
 
-            int[] parent = new int[graph.getVerticesCount()];
-            parent[sink] = -1;
+            for (int vertex = sink; vertex != source; vertex = augmentingPath[vertex].other(vertex)) {
+                bottleneck = Math.min(bottleneck, augmentingPath[vertex].getResidualFlow(vertex));
+            }
 
-            Stack<Integer> stack = new LinkedStack<>();
-            stack.push(source);
+            for (int vertex = sink; vertex != source; vertex = augmentingPath[vertex].other(vertex)) {
+                augmentingPath[vertex].addResidualFlowTo(vertex, bottleneck);
+            }
 
-            while (stack.size() != 0) {
-                int vertex = stack.pop();
-                boolean found = false;
+            maxFlow += bottleneck;
+        }
 
-                if (vertex == sink) {
-                    stack.clear();
-                    break;
-                }
+        private void initFlowNetwork() {
+            flowNetwork = new FlowNetwork(graph.getVerticesCount());
+            Queue<Integer> queue = new LinkedQueue<>();
+            boolean visited[] = new boolean[graph.getVerticesCount()];
 
-                for (int adjacent = 0; adjacent < graph.getVerticesCount(); adjacent++) {
-                    double flow = getFlow(vertex, adjacent);
-                    double capacity = getCapacity(vertex, adjacent);
+            queue.add(source);
+            visited[source] = true;
 
-                    if (capacity > 0) {
-                        double delta = capacity - flow;
+            while (queue.size() != 0) {
+                int vertex = queue.poll();
 
-                        if (delta != 0 && delta < bottleneck) {
-                            bottleneck = delta;
-                        }
-                        if (delta > 0) {
-                            parent[adjacent] = vertex;
-                            stack.push(adjacent);
+                for (int adjacent : graph.getAdjacentVertices(vertex)) {
+                    double weight = graph.getEdgeWeight(vertex, adjacent);
+                    Edge edge = new Edge(vertex, adjacent, weight);
 
-                            found = true;
+                    flowNetwork.addEdge(edge);
 
-                            break;
-                        }
-
+                    if (!visited[adjacent]) {
+                        queue.add(adjacent);
+                        visited[adjacent] = true;
                     }
-
                 }
-
-                if (!found) {
-                    for (int adjacent = 0; adjacent < graph.getVerticesCount(); adjacent++) {
-                        double flow = getFlow(vertex, adjacent);
-                        double capacity = getCapacity(vertex, adjacent);
-
-                        if (capacity < 0) {
-                            if (flow > 0 && bottleneck > 0 && adjacent != source) {
-
-                                if (flow < bottleneck) {
-                                    bottleneck = flow;
-                                }
-
-                                parent[adjacent] = vertex;
-                                stack.push(adjacent);
-
-                                break;
-                            }
-                        }
-                    }
-
-                }
-
             }
-
-            if (parent[sink] != -1) {
-                int vertex = sink;
-
-                while (vertex != source) {
-                    addFlow(parent[vertex], vertex, bottleneck);
-                    vertex = parent[vertex];
-                }
-
-                maxFlow += bottleneck;
-                System.out.println("maxFlow = " + maxFlow);
-
-                findAugmentingPath();
-            }
-        }
-
-        private void initFlows(int vertex) {
-            for (int adjacent : graph.getAdjacentVertices(vertex)) {
-                double weight = graph.getEdgeWeight(vertex, adjacent);
-
-                setCapacity(vertex, adjacent, weight);
-                initFlows(adjacent);
-            }
-        }
-
-        private void addFlow(int v1, int v2, double flow) {
-            double capacity = getCapacity(v1, v2);
-
-            if (capacity > 0) {
-                flows[v1][v2][0] += flow;
-                flows[v2][v1][0] += flow;
-                System.out.println("flow " + v1 + "->" + v2 + " = " + (flows[v1][v2][0] - flow) + "+" + flow + " = " + flows[v1][v2][0]);
-
-            } else {
-                flows[v1][v2][0] -= flow;
-                flows[v2][v1][0] -= flow;
-                System.out.println("flow " + v1 + "->" + v2 + " = " + (flows[v1][v2][0] + flow) + "-" + flow + " = " + flows[v1][v2][0]);
-            }
-        }
-
-        private void setCapacity(int v1, int v2, double capacity) {
-            flows[v1][v2][1] = capacity;
-            flows[v2][v1][1] = -capacity;
-        }
-
-
-        private double getFlow(int v1, int v2) {
-            return flows[v1][v2][0];
-        }
-
-        private double getCapacity(int v1, int v2) {
-            return flows[v1][v2][1];
         }
 
         @Override
         public int getMaxFlow() {
             return maxFlow;
         }
+
+        private class FlowNetwork {
+            private LinkedList<Edge>[] edges;
+
+            FlowNetwork(int verticesCount) {
+                edges = (LinkedList<Edge>[]) new LinkedList[verticesCount];
+
+                for (int v = 0; v < graph.getVerticesCount(); v++) {
+                    edges[v] = new LinkedList<>();
+                }
+            }
+
+            void addEdge(Edge edge) {
+                edges[edge.from].add(edge);
+                edges[edge.to].add(edge);
+            }
+
+            Iterator<Edge> getAdjacencyEdges(int vertex) {
+                return edges[vertex].iterator();
+            }
+
+        }
+
+        private class Edge {
+            final int from;
+            final int to;
+            private double flow = 0;
+            final double capacity;
+
+            Edge(int from, int to, double capacity) {
+                this.from = from;
+                this.to = to;
+                this.capacity = capacity;
+            }
+
+            void addResidualFlowTo(int vertex, double delta) {
+                if (vertex == to) {
+                    flow += delta;
+                } else if (vertex == from) {
+                    flow -= delta;
+                } else {
+                    throw new IllegalArgumentException("It attempts to add flow from the invalid edge");
+                }
+            }
+
+            double getResidualFlow(int vertex) {
+                if (vertex == to) {
+                    return capacity - flow;
+                } else if (vertex == from) {
+                    return flow;
+                } else {
+                    throw new IllegalArgumentException("It attempts to get flow from the invalid edge");
+                }
+            }
+
+            int other(int vertex) {
+                if (vertex == to) {
+                    return from;
+                } else if (vertex == from) {
+                    return to;
+                } else {
+                    throw new IllegalArgumentException("It attempts to get the other vertex from the invalid edge");
+                }
+            }
+        }
+
     }
 
 }

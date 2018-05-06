@@ -7,6 +7,7 @@
 6. BinarySearchTree
 7. BinarySearchTree (without link to parent)
 8. Union-Find
+9. LinkedList
 
 [Tasks](https://github.com/badprogrammist/algorithms/tree/master/src/main/java/ru/ildar/algorithm/datastructure/tasks)
  
