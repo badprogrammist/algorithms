@@ -28,6 +28,19 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     @Override
+    public void removeEdge(int parent, int child) {
+        edges.removeEdge(parent, child);
+        decrementDegree(parent);
+
+        if (!isDirected()) {
+            edges.removeEdge(child, parent);
+            decrementDegree(child);
+        }
+
+        setEdgesCount(getEdgesCount() - 1);
+    }
+
+    @Override
     public double getEdgeWeight(int v1, int v2) {
         return edges.getWeight(v1, v2);
     }
@@ -113,6 +126,19 @@ public class AdjacencyList extends AbstractGraph {
                 childVertex.next = parentVertex.next;
             }
             parentVertex.next = childVertex;
+        }
+
+        void removeEdge(int parent, int child) {
+            Iterator<EdgeNode> iter = getAdjacentNodesIterator(parent);
+
+            while (iter.hasNext()) {
+                EdgeNode vertex = iter.next();
+
+                if (vertex.next != null && vertex.next.vertex == child) {
+                    vertex.next = vertex.next.next;
+                    break;
+                }
+            }
         }
 
         Iterator<Integer> getAdjacentVerticesIterator(int vertex) {

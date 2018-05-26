@@ -39,6 +39,11 @@ public abstract class AbstractGraph implements Graph {
         degrees[vertex]++;
     }
 
+    protected void decrementDegree(int vertex) {
+        validateVertex(vertex);
+        degrees[vertex]--;
+    }
+
     @Override
     public void insertEdge(int v1, int v2, double weight) {
         validateVertex(v1);

@@ -67,6 +67,16 @@ class AdjacencyMatrixTest extends Specification {
         checkAdjacentEdgesIterator(ae3, aei3)
         checkAdjacentEdgesIterator(ae4, aei4)
         checkAdjacentEdgesIterator(ae5, aei5)
+
+        when: "Remove an edge"
+        g.removeEdge(1, 2)
+
+        then:
+        !g.isAdjacent(1, 2)
+        !g.isAdjacent(2, 1)
+        g.getDegree(1) == degree1 - 1
+        g.getDegree(2) == degree2 - 1
+        g.getEdgesCount() == 6
     }
 
     def "Test of reversing adjacency matrix"() {

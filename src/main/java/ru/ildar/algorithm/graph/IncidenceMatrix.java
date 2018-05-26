@@ -45,15 +45,56 @@ public class IncidenceMatrix extends AbstractGraph {
     }
 
     @Override
+    public void removeEdge(int v1, int v2) {
+        int index = findEdge(v1, v2);
+
+        if (index != -1) {
+            Edge[] edges = new Edge[getEdgesCount() - 1];
+            int cursor = 0;
+
+            while (cursor < index) {
+                edges[cursor] = this.edges[cursor];
+                cursor++;
+            }
+            while (cursor < getEdgesCount() - 1) {
+                edges[cursor] = this.edges[cursor + 1];
+                cursor++;
+            }
+
+            this.edges = edges;
+            decrementDegree(v1);
+
+            if (!isDirected()) {
+                decrementDegree(v2);
+            }
+
+            setEdgesCount(getEdgesCount() - 1);
+        }
+    }
+
+    @Override
     public double getEdgeWeight(int v1, int v2) {
+        int index = findEdge(v1, v2);
+
+        if (index != -1) {
+            return edges[index].getWeight();
+        }
+
+        return -1;
+    }
+
+    private int findEdge(int v1, int v2) {
         for (int j = 0; j < getEdgesCount(); j++) {
             Edge edge = edges[j];
 
-            if ((edge.getParent() == v1 && edge.getChild() == v2)
-                    || (edge.getParent() == v2 && edge.getChild() == v1)) {
-                return edge.getWeight();
+            if ((!isDirected()
+                    && ((edge.getParent() == v1 && edge.getChild() == v2)
+                    || (edge.getParent() == v2 && edge.getChild() == v1))
+            ) || (edge.getParent() == v1 && edge.getChild() == v2)) {
+                return j;
             }
         }
+
         return -1;
     }
 

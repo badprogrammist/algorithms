@@ -36,6 +36,21 @@ public class AdjacencyMatrix extends AbstractGraph {
     }
 
     @Override
+    public void removeEdge(int parent, int child) {
+        matrix[parent][child].adjacent = false;
+        matrix[parent][child].weight = 0;
+        decrementDegree(parent);
+
+        if (!isDirected()) {
+            matrix[child][parent].adjacent = false;
+            matrix[child][parent].weight = 0;
+            decrementDegree(child);
+        }
+
+        setEdgesCount(getEdgesCount() - 1);
+    }
+
+    @Override
     public double getEdgeWeight(int v1, int v2) {
         Edge edge = matrix[v1][v2];
 
