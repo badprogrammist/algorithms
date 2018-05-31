@@ -51,10 +51,27 @@ public class AdjacencyMatrix extends AbstractGraph {
     }
 
     @Override
+    public void setEdgeWeight(int v1, int v2, double weight) {
+        Edge edge = matrix[v1][v2];
+
+        if (edge.adjacent) {
+            edge.weight = weight;
+        }
+
+        if (!isDirected()) {
+            edge = matrix[v2][v1];
+
+            if (edge.adjacent) {
+                edge.weight = weight;
+            }
+        }
+    }
+
+    @Override
     public double getEdgeWeight(int v1, int v2) {
         Edge edge = matrix[v1][v2];
 
-        if (edge != null) {
+        if (edge.adjacent) {
             return edge.weight;
         } else {
             return -1;
@@ -76,7 +93,7 @@ public class AdjacencyMatrix extends AbstractGraph {
 
                     for (int k = 0; k < getVerticesCount(); k++) {
                         if (isAdjacent(j, k) && !isAdjacent(i, k)) {
-                            squared.insertEdge(i, k, 0.0); // TODO calculate weight
+                            squared.insertEdge(i, k, getEdgeWeight(i, k));
                         }
                     }
                 }

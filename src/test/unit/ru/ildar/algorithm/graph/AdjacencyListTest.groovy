@@ -77,6 +77,13 @@ class AdjacencyListTest extends Specification {
         g.getDegree(1) == degree1 - 1
         g.getDegree(2) == degree2 - 1
         g.getEdgesCount() == 6
+
+        when: "Change the weight of an edge"
+        g.setEdgeWeight(0, 1, 67)
+
+        then: "The changed weight should equals expected"
+        g.getEdgeWeight(0, 1) == 67
+        g.getEdgeWeight(1, 0) == 67
     }
 
     def "Test of reversing adjacency list"() {

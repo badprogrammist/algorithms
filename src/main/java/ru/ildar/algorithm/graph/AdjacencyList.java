@@ -41,6 +41,15 @@ public class AdjacencyList extends AbstractGraph {
     }
 
     @Override
+    public void setEdgeWeight(int v1, int v2, double weight) {
+        edges.setWeight(v1, v2, weight);
+
+        if(!isDirected()) {
+            edges.setWeight(v2, v1, weight);
+        }
+    }
+
+    @Override
     public double getEdgeWeight(int v1, int v2) {
         return edges.getWeight(v1, v2);
     }
@@ -150,17 +159,30 @@ public class AdjacencyList extends AbstractGraph {
         }
 
         double getWeight(int v1, int v2) {
+            EdgeNode edgeNode = getEdgeNode(v1, v2);
+            return edgeNode != null ? edgeNode.weight : -1;
+        }
+
+        void setWeight(int v1, int v2, double weight) {
+            EdgeNode edgeNode = getEdgeNode(v1, v2);
+
+            if (edgeNode != null) {
+                edgeNode.weight = weight;
+            }
+        }
+
+        private EdgeNode getEdgeNode(int v1, int v2) {
             Iterator<EdgeNode> iter = getAdjacentNodesIterator(v1);
 
             while (iter.hasNext()) {
                 EdgeNode adjacentNode = iter.next();
 
                 if (adjacentNode.vertex == v2) {
-                    return adjacentNode.weight;
+                    return adjacentNode;
                 }
             }
 
-            return -1;
+            return null;
         }
 
     }

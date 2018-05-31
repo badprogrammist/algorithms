@@ -73,6 +73,15 @@ public class IncidenceMatrix extends AbstractGraph {
     }
 
     @Override
+    public void setEdgeWeight(int v1, int v2, double weight) {
+        int index = findEdge(v1, v2);
+
+        if (index != -1) {
+            edges[index].setWeight(weight);
+        }
+    }
+
+    @Override
     public double getEdgeWeight(int v1, int v2) {
         int index = findEdge(v1, v2);
 
@@ -186,6 +195,10 @@ public class IncidenceMatrix extends AbstractGraph {
 
         public double getWeight() {
             return weight;
+        }
+
+        public void setWeight(double weight) {
+            this.weight = weight;
         }
     }
 

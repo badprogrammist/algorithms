@@ -36,6 +36,13 @@ class IncidenceMatrixTest extends Specification {
         !matrix.isAdjacent(removingEdge[1], removingEdge[0])
         matrix.getEdgesCount() == count - 1
 
+        when: "Change the weight of an edge"
+        matrix.setEdgeWeight(0, 1, 67)
+
+        then: "The changed weight should equals expected"
+        matrix.getEdgeWeight(0, 1) == 67
+        !directed ? matrix.getEdgeWeight(1, 0) == 67 : true
+
         where:
         edges                                                            | directed | expectedAdjacencyEdges                                                                     | removingEdge
         [[0, 1], [0, 2], [1, 2], [1, 3], [1, 4], [2, 3], [3, 4]]         | false    | [0: [1, 2], 1: [0, 2, 3, 4], 2: [0, 1, 3], 3: [1, 2, 4], 4: [1, 3]] as Map<Integer, int[]> | [1, 4]

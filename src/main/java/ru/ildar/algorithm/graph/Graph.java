@@ -24,7 +24,7 @@ public interface Graph {
 
     boolean isAdjacent(int v1, int v2);
 
-    void validateVertex(int vertex) throws IllegalArgumentException;
+    void validateVertex(int vertex);
 
     Iterator<Integer> getAdjacentVerticesIterator(int vertex);
 
@@ -33,6 +33,8 @@ public interface Graph {
     double getVertexWeight(int vertex);
 
     double getEdgeWeight(int v1, int v2);
+
+    void setEdgeWeight(int v1, int v2, double weight);
 
     Graph reversed();
 
