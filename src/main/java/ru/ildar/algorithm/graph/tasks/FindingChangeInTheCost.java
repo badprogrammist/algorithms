@@ -14,12 +14,10 @@ import ru.ildar.algorithm.graph.Graph;
  */
 public class FindingChangeInTheCost {
 
-    private Graph graph;
     private Graph mst;
     private int[] edge;
 
     public void find(Graph graph, Graph mst) {
-        this.graph = graph;
         this.mst = mst;
         this.edge = new int[2];
 
