@@ -58,7 +58,9 @@
 6. Ford-Fulkerson algorithm of finding maximum flow
 
 ## Combinatorial Search and Heuristics Methods
-TODO
+1. Backtracking
+    - Generating all subsets of a set
+    - Generating all permutations of a string
 
 ## Dynamic Programming
 TODO
