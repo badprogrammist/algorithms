@@ -3,8 +3,6 @@ package ru.ildar.algorithm.combinatorialsearch;
 import ru.ildar.algorithm.datastructure.list.ArrayList;
 import ru.ildar.algorithm.datastructure.list.List;
 
-import java.util.Arrays;
-
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */

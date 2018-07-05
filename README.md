@@ -61,6 +61,7 @@
 1. Backtracking
     - Generating all subsets of a set
     - Generating all permutations of a string
+    - N-Queens problem
 
 ## Dynamic Programming
 TODO
