@@ -62,6 +62,7 @@
     - Generating all subsets of a set
     - Generating all permutations of a string
     - N-Queens problem
+    - All paths between two vertices in a graph
 
 ## Dynamic Programming
 TODO

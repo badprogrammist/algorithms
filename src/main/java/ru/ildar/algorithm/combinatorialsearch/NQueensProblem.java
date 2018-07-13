@@ -5,11 +5,11 @@ import ru.ildar.algorithm.datastructure.list.List;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
+ * TODO add method for retrieving the fundamental solutions
  */
 public class NQueensProblem {
 
     private int n;
-    private long permutations;
     private List<int[]> solutions;
 
     public void solve(int n) {
@@ -18,11 +18,9 @@ public class NQueensProblem {
         int[] queens = new int[n];
 
         next(queens, 0);
-        System.out.println("permutations: " + permutations);
     }
 
     private void next(int[] queens, int k) {
-        permutations++;
         for (int i = 0; i < n; i++) {
             queens[k] = i;
 
