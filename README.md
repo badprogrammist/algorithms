@@ -63,6 +63,7 @@
     - Generating all permutations of a string
     - N-Queens problem
     - All paths between two vertices in a graph
+    - Sudoku
 
 ## Dynamic Programming
 TODO
