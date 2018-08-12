@@ -1,8 +1,7 @@
-package ru.ildar.algorithm.combinatorialsearch
+package ru.ildar.algorithm.backtracking
 
 import ru.ildar.algorithm.graph.Graph
 import ru.ildar.algorithm.graph.GraphBuilder
-import ru.ildar.algorithm.graph.GraphConverter
 import spock.lang.Specification
 
 /**

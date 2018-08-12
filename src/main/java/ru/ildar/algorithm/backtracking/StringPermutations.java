@@ -1,4 +1,4 @@
-package ru.ildar.algorithm.combinatorialsearch;
+package ru.ildar.algorithm.backtracking;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)

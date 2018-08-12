@@ -1,4 +1,4 @@
-package ru.ildar.algorithm.combinatorialsearch
+package ru.ildar.algorithm.backtracking
 
 import spock.lang.Specification
 
