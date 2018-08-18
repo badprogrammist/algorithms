@@ -23,14 +23,33 @@ class MonteCarloMethodTest extends Specification {
         alg.getSolutionCost() == expectedCost
 
         and: "The solution path should equals expected"
-        alg.getSolution() == expectedPath as int[]
+        equalsAny(alg.getSolution(), expectedPaths as int[][])
 
         where:
-        edges                  | start | stepsNumber | expectedCost | expectedPath
+        edges                  | start | stepsNumber | expectedCost | expectedPaths
         [[0, 1]: 5, [0, 2]: 2,
          [0, 3]: 12, [1, 4]: 3,
          [1, 3]: 10, [2, 3]: 8,
-         [2, 4]: 4, [3, 4]: 3] | 0     | 100         | 16           | [0, 2, 3, 4, 1]
+         [2, 4]: 4, [3, 4]: 3] | 0     | 10          | 21           | [[0, 1, 4, 3, 2, 0],
+                                                                       [0, 2, 3, 4, 1, 0]]
+
+        [[0, 1]: 4, [0, 2]: 9,
+         [0, 3]: 7, [1, 2]: 6,
+         [1, 4]: 5, [2, 3]: 8,
+         [2, 4]: 11, [3, 4]: 2,
+         [3, 5]: 5, [4, 5]: 10,
+         [4, 6]: 2, [5, 6]: 3] | 0     | 10          | 36           | [[0, 2, 3, 5, 6, 4, 1, 0],
+                                                                       [0, 1, 4, 6, 5, 3, 2, 0]]
+    }
+
+    boolean equalsAny(int[] result, int[][] expectedPaths) {
+        for (int[] path: expectedPaths) {
+            if (result == path) {
+                return true
+            }
+        }
+
+        return false
     }
 
 }
