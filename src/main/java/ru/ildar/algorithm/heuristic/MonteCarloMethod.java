@@ -9,9 +9,7 @@ import ru.ildar.algorithm.graph.Graph;
  */
 public class MonteCarloMethod implements TSPSolver {
 
-    private Graph graph;
-    private int[] solution;
-    private double solutionCost = 0;
+    private TSPSolution solution;
     private int stepsNumber;
 
     public MonteCarloMethod(int stepsNumber) {
@@ -20,38 +18,29 @@ public class MonteCarloMethod implements TSPSolver {
 
     @Override
     public void solve(Graph tsp, int start) {
-        this.graph = tsp;
-        TSPRandomSolutionGenerator randomGenerator = new TSPRandomSolutionGenerator(tsp, start);
+        TSPRandomSolutionGenerator randomGenerator = new TSPRandomSolutionGenerator(tsp);
+        solution = randomGenerator.getRandomSolution(start);
+        double solutionCost = solution.getCost();
 
         for (int step = 0; step < stepsNumber; step++) {
-            int[] s = randomGenerator.getRandomSolution();
-            double cost = getCost(s);
+            TSPSolution s = randomGenerator.getRandomSolution(start);
+            double cost = s.getCost();
 
-            if (solution == null || cost < solutionCost) {
+            if (cost < solutionCost) {
                 solution = s;
                 solutionCost = cost;
             }
         }
     }
 
-    private double getCost(int[] s) {
-        double cost = 0;
-
-        for (int i = 0; i < s.length - 1; i++) {
-            cost += graph.getEdgeWeight(s[i], s[i + 1]);
-        }
-
-        return cost;
-    }
-
     @Override
     public int[] getSolution() {
-        return solution;
+        return solution.getSolution();
     }
 
     @Override
     public double getSolutionCost() {
-        return solutionCost;
+        return solution.getCost();
     }
 
 }

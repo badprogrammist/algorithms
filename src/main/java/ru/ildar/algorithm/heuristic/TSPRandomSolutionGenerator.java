@@ -10,16 +10,14 @@ import java.util.Random;
  */
 public class TSPRandomSolutionGenerator {
     private Graph graph;
-    private int start;
 
     private Random random = new Random(Calendar.getInstance().getTimeInMillis());
 
-    public TSPRandomSolutionGenerator(Graph tsp, int start) {
+    public TSPRandomSolutionGenerator(Graph tsp) {
         this.graph = tsp;
-        this.start = start;
     }
 
-    public int[] getRandomSolution() {
+    public TSPSolution getRandomSolution(int start) {
         int n = graph.getVerticesCount();
         boolean[] visited = new boolean[n];
         int[] path = new int[n + 1];
@@ -31,7 +29,7 @@ public class TSPRandomSolutionGenerator {
         for (int i = 1; i < n; i++) {
 
             if (isStuck(visited, path[i - 1])) {
-                return getRandomSolution();
+                return getRandomSolution(start);
             }
 
             do {
@@ -41,14 +39,14 @@ public class TSPRandomSolutionGenerator {
                     || !graph.isAdjacent(path[i - 1], path[i])
                     || (i == n - 1 && !graph.isAdjacent(path[i], start)));
 
-            if (i == n - 2 && !isPossibleReturnBack(visited, path[i])) {
-                return getRandomSolution();
+            if (i == n - 2 && !isPossibleReturnBack(visited, path[i], start)) {
+                return getRandomSolution(start);
             }
 
             visited[path[i]] = true;
         }
 
-        return path;
+        return new TSPSolution(graph, path);
     }
 
     private boolean isStuck(boolean[] visited, int vertex) {
@@ -65,7 +63,7 @@ public class TSPRandomSolutionGenerator {
     }
 
 
-    private boolean isPossibleReturnBack(boolean[] visited, int grandParent) {
+    private boolean isPossibleReturnBack(boolean[] visited, int grandParent, int start) {
         for (int adj : graph.getAdjacentVertices(grandParent)) {
             if (adj != start && !visited[adj] && graph.isAdjacent(adj, start) ) {
                 return true;

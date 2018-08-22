@@ -67,6 +67,7 @@
 2. Heuristic Search Methods
     - Monte-Carlo method for solving Travelling Salesman Problem
     - Local Search method for solving Travelling Salesman Problem
+    - Simulated Annealing method for solving Travelling Salesman Problem
 
 ## Dynamic Programming
 TODO
