@@ -66,6 +66,7 @@
     - Sudoku
     - Derangement of set
     - Graph isomorphism problem
+    - Bandwidth Reduction
 2. Heuristic Search Methods
     - Monte-Carlo method for solving Travelling Salesman Problem
     - Local Search method for solving Travelling Salesman Problem
