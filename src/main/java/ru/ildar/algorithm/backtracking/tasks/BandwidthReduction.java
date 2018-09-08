@@ -4,6 +4,11 @@ import ru.ildar.algorithm.graph.Graph;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
+ *
+ * Design and implement an algorithm for solving the bandwidth minimization problem.
+ *
+ * Brute-force implementation using backtracking
+ *
  */
 public class BandwidthReduction {
 
