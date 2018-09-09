@@ -75,6 +75,7 @@
 
 ## Dynamic Programming
 1. Fibonacci numbers
+2. Binomial Coefficients
 
 ## Intractable Problems and Approximations Algorithms
 TODO
