@@ -5,11 +5,11 @@ import spock.lang.Specification
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-class FibonacciLoopTest extends Specification {
+class FibonacciBottomUpTest extends Specification {
 
-    def "Test of compute Fibonacci numbers via loop algorithm"() {
+    def "Test of compute Fibonacci numbers via bottom up algorithm"() {
         when: "Trying to Fibonacci numbers"
-        FibonacciLoop alg = new FibonacciLoop()
+        FibonacciBottomUp alg = new FibonacciBottomUp()
 
         then: "The result should equal expected"
         alg.compute(n) == expectedResult

@@ -3,7 +3,7 @@ package ru.ildar.algorithm.dynamic;
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-public class FibonacciMemorizedLoop {
+public class FibonacciMemorizedBottomUp {
 
     public long compute(long n) {
         long[] cache = new long[(int) n + 2];

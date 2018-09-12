@@ -5,11 +5,11 @@ import spock.lang.Specification
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-class FibonacciMemorizedLoopTest extends Specification {
+class FibonacciMemorizedBottomUpTest extends Specification {
 
-    def "Test of compute Fibonacci numbers via memorized loop algorithm"() {
+    def "Test of compute Fibonacci numbers via memorized bottom up algorithm"() {
         when: "Trying to Fibonacci numbers"
-        FibonacciMemorizedLoop alg = new FibonacciMemorizedLoop()
+        FibonacciMemorizedBottomUp alg = new FibonacciMemorizedBottomUp()
 
         then: "The result should equal expected"
         alg.compute(n) == expectedResult

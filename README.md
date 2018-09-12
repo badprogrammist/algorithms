@@ -75,7 +75,14 @@
 
 ## Dynamic Programming
 1. Fibonacci numbers
+    - Naive Recursive
+    - Memorized Recursive
+    - Bottom Up
 2. Binomial Coefficients
+3. LevenshteinDistance
+    - Naive Recursive
+    - Memorized Recursive
+    - Bottom Up
 
 ## Intractable Problems and Approximations Algorithms
 TODO

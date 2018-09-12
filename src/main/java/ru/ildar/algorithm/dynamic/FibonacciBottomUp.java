@@ -3,7 +3,7 @@ package ru.ildar.algorithm.dynamic;
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
  */
-public class FibonacciLoop {
+public class FibonacciBottomUp {
 
     public long compute(long n) {
         long back1 = 1;
