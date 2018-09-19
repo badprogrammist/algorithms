@@ -13,12 +13,15 @@ class PartitionProblemTest extends Specification {
         PartitionProblem alg = new PartitionProblem()
         alg.find(sequence as int[], partsNumber)
 
-        then:
-        true
+        then: "The result should equals expected result"
+        alg.getSolution() == solution as int[]
+
+        and: "The difference should equals expected"
+        alg.getMinDiff() == minDiff
 
         where:
-        sequence                       | partsNumber
-        [3, 4, 8, 1, 2, 4, 5, 2, 1, 6] | 5
+        sequence                       | partsNumber | solution        | minDiff
+        [3, 4, 8, 1, 2, 4, 5, 2, 1, 6] | 5           | [0, 2, 3, 6, 8] | 1
     }
 
 }
