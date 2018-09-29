@@ -84,6 +84,7 @@
     - Naive Recursive
     - Memorized Recursive
     - Bottom Up
+4. Partition problem
 
 ## Intractable Problems and Approximations Algorithms
 TODO
