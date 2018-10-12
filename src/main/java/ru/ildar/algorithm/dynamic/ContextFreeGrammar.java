@@ -1,5 +1,6 @@
 package ru.ildar.algorithm.dynamic;
 
+import ru.ildar.algorithm.datastructure.Iterator;
 import ru.ildar.algorithm.datastructure.tree.SearchTree;
 
 import java.util.HashMap;
@@ -13,13 +14,23 @@ public class ContextFreeGrammar {
 
     public static class Grammar {
         private Map<String, Rule> rules;
+        private Rule[] indexToRule;
 
         Grammar(Map<String, Rule> rules) {
             this.rules = rules;
+            indexToRule = new Rule[rules.size()];
+
+            for (Rule rule : rules.values()) {
+                indexToRule[rule.getId()] = rule;
+            }
         }
 
         Rule getRule(String symbol) {
             return rules.get(symbol);
+        }
+
+        Rule getRule(int id) {
+            return indexToRule[id];
         }
 
         int size() {
@@ -30,6 +41,7 @@ public class ContextFreeGrammar {
             return rules.keySet();
         }
 
+
     }
 
     public static class GrammarBuilder {
@@ -39,6 +51,9 @@ public class ContextFreeGrammar {
 
         private Map<String, Rule> rules = new HashMap<>();
         private int index = 0;
+
+        private GrammarBuilder() {
+        }
 
         public GrammarBuilder rule(String symbol, String[] values) {
             if (rules.containsKey(symbol)) {
@@ -71,6 +86,7 @@ public class ContextFreeGrammar {
     }
 
     public static abstract class Rule {
+
         private String symbol;
         private int id;
 
@@ -87,7 +103,10 @@ public class ContextFreeGrammar {
             return symbol;
         }
 
-        abstract boolean check(String...symbols);
+        abstract int check(String... symbols);
+
+        abstract String[] getRightPart();
+
     }
 
     private static class NonTerminal extends Rule {
@@ -101,18 +120,31 @@ public class ContextFreeGrammar {
         }
 
         @Override
-        boolean check(String... symbols) {
-            if (symbols == null || symbols.length != 2) {
-                return false;
-            }
-            if (symbols[0] == null || symbols[0].isEmpty()) {
-                return false;
-            }
-            if (symbols[1] == null || symbols[1].isEmpty()) {
-                return false;
+        int check(String... symbols) {
+            if (symbols != null) {
+                if (symbols.length == 1 && symbols[0] != null
+                        && (first.equalsIgnoreCase(symbols[0]) || second.equalsIgnoreCase(symbols[0]))) {
+                    return 1;
+                }
+
+                if (symbols.length == 2 && (
+                        (!first.equalsIgnoreCase(symbols[0]) && second.equalsIgnoreCase(symbols[1]))
+                                || (first.equalsIgnoreCase(symbols[0]) && !second.equalsIgnoreCase(symbols[1])))) {
+                    return 1;
+                }
+
+                if (symbols.length == 2 && symbols[0] != null && symbols[1] != null
+                        && first.equalsIgnoreCase(symbols[0]) && second.equalsIgnoreCase(symbols[1])) {
+                    return 0;
+                }
             }
 
-            return first.equalsIgnoreCase(symbols[0]) && second.equalsIgnoreCase(symbols[1]);
+            return 2;
+        }
+
+        @Override
+        String[] getRightPart() {
+            return new String[]{first, second};
         }
     }
 
@@ -130,69 +162,139 @@ public class ContextFreeGrammar {
         }
 
         @Override
-        boolean check(String... symbols) {
-            if (symbols == null || symbols.length == 0) {
-                return false;
-            }
-            if (symbols[0] == null || symbols[0].isEmpty()) {
-                return false;
+        int check(String... symbols) {
+            if (symbols != null) {
+                if (symbols[0] != null && values.contains(symbols[0].toLowerCase())) {
+                    return 0;
+                }
             }
 
-            return values.contains(symbols[0].toLowerCase());
+            return 1;
+        }
+
+        @Override
+        String[] getRightPart() {
+            String[] rightPart = new String[values.size()];
+            Iterator<String> iter = values.iterator();
+            int idx = 0;
+
+            while (iter.hasNext()) {
+                rightPart[idx] = iter.next();
+            }
+
+            return rightPart;
         }
     }
 
-    public static class GrammarChecker {
-
-        private String[][] m;
+    public static class CYKAlgorithm {
+        private int[][][] costs;
         private Grammar g;
         private String[] sentence;
 
-        public boolean check(Grammar g, String[] sentence) {
-            this.g = g;
+        public int check(Grammar g, String[] sentence) {
             this.sentence = sentence;
-            this.m = new String[sentence.length][sentence.length];
-            int subStrLength = 0;
+            this.g = g;
+            costs = new int[sentence.length][sentence.length][g.size()];
 
-            while (subStrLength < sentence.length) {
-                for (int begin = 0; begin < sentence.length - subStrLength; begin++) {
-                    int end = begin + subStrLength;
+            for (int index1 = 0; index1 < sentence.length; index1++) {
+                for (int index2 = 0; index2 < sentence.length; index2++) {
+                    for (int id = 0; id < g.size(); id++) {
+                        costs[index1][index2][id] = Integer.MAX_VALUE;
+                    }
+                }
+            }
 
-                    if (begin == end) {
-                        checkRules(begin, -1, end);
-                    } else {
-                        for (int k = begin; k < end; k++) {
-                            checkRules(begin, k, end);
+            checkTerminals();
+
+            for (int length = 1; length < sentence.length; length++) {
+                for (int i = 0; i < sentence.length - length; i++) {
+                    int j = i + length;
+
+                    for (int s = i; s < j; s++) {
+                        checkNonTerminalRules(i, s, j);
+                        checkCaseOfInserting(i, j);
+
+                    }
+                }
+            }
+
+            return costs[0][sentence.length - 1][getMinCostIndex(costs[0][sentence.length - 1])];
+        }
+
+        private void checkTerminals() {
+            for (int index = 0; index < sentence.length; index++) {
+                String symbol = sentence[index];
+
+                for (int id = 0; id < g.size(); id++) {
+                    Rule rule = g.getRule(id);
+                    int cost = rule.check(symbol);
+                    costs[index][index][id] = cost;
+                }
+
+                checkCaseOfInserting(index, index);
+            }
+        }
+
+        private void checkNonTerminalRules(int i, int s, int j) {
+            for (int id = 0; id < g.size(); id++) {
+                Rule rule = g.getRule(id);
+                String[] rightPart = rule.getRightPart();
+                int min = Integer.MAX_VALUE;
+
+                if (rightPart.length == 2) {
+                    Rule firstRule = g.getRule(rightPart[0]);
+                    Rule secondRule = g.getRule(rightPart[1]);
+
+                    if (firstRule != null && secondRule != null) {
+                        if (costs[i][s][firstRule.getId()] != Integer.MAX_VALUE && costs[s + 1][j][secondRule.getId()] != Integer.MAX_VALUE) {
+                            min = costs[i][s][firstRule.getId()] + costs[s + 1][j][secondRule.getId()];
                         }
                     }
                 }
 
-                subStrLength++;
+                if (min < costs[i][j][id]) {
+                    costs[i][j][id] = min;
+                }
             }
-
-            return m[0][sentence.length - 1] != null;
         }
 
-        private void checkRules(int begin, int k, int end) {
-            for (String symbol : g.getSymbols()) {
-                Rule rule = g.getRule(symbol);
+        private void checkCaseOfInserting(int i, int j) {
+            for (int id = 0; id < g.size(); id++) {
+                Rule rule = g.getRule(id);
+                int min = Integer.MAX_VALUE;
 
-                if (begin == end) {
-                    if (rule.check(sentence[begin])) {
-                        m[begin][begin] = symbol;
-                        break;
-                    }
-                } else {
-                    String firstSymbol = m[begin][k];
-                    String secondSymbol = m[k + 1][end];
+                for (int firstRuleId = 0; firstRuleId < g.size(); firstRuleId++) {
+                    if (id != firstRuleId) {
+                        int cost = Integer.MAX_VALUE;
 
-                    if (rule.check(firstSymbol, secondSymbol)) {
-                        m[begin][end] = symbol;
-                        break;
+                        if (costs[i][j][firstRuleId] != Integer.MAX_VALUE) {
+                            cost = costs[i][j][firstRuleId] + rule.check(g.getRule(firstRuleId).getSymbol());
+                        }
+
+                        if (cost < min) {
+                            min = cost;
+                        }
                     }
                 }
 
+                if (min < costs[i][j][id]) {
+                    costs[i][j][id] = min;
+                }
             }
+        }
+
+        private static int getMinCostIndex(int... values) {
+            int min = Integer.MAX_VALUE;
+            int index = 0;
+
+            for (int i = 0; i < values.length; i++) {
+                if (values[i] < min) {
+                    min = values[i];
+                    index = i;
+                }
+            }
+
+            return index;
         }
     }
 

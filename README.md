@@ -86,6 +86,7 @@
     - Bottom Up
 4. Partition problem
 5. Parsing Context-Free Grammars
+    - CYK Parsing Algorithm
 
 ## Intractable Problems and Approximations Algorithms
 TODO

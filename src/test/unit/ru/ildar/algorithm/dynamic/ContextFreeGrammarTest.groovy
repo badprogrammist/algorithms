@@ -19,22 +19,24 @@ class ContextFreeGrammarTest extends Specification {
                 .create()
 
         when: "Trying to check grammar of some sentence"
-        ContextFreeGrammar.GrammarChecker checker = new ContextFreeGrammar.GrammarChecker()
-        boolean result = checker.check(g, sentence as String[])
+        ContextFreeGrammar.CYKAlgorithm alg = new ContextFreeGrammar.CYKAlgorithm()
+        int result = alg.check(g, sentence as String[])
 
         then: "The correctness of grammar should equals expected"
         result == expectedResult
 
         where:
         sentence                               | expectedResult
-        ["the", "cat", "drank", "the", "milk"] | true
-        ["a", "cat", "drank", "the", "milk"]   | true
-        ["drank", "the", "milk"]               | true
-        ["the", "milk"]                        | true
-        ["drank"]                              | true
-        ["the", "cat", "the", "milk"]          | false
-        ["the", "cat", "drank", "milk"]        | false
-        ["a", "cat", "drink", "the", "milk"]   | false
+        ["the", "cat", "drank", "the", "milk"] | 0
+        ["a", "cat", "drank", "the", "milk"]   | 0
+        ["drank", "the", "milk"]               | 0
+        ["the", "milk"]                        | 0
+        ["drank"]                              | 0
+        ["the", "cat", "the", "milk"]          | 1 // missing verb
+        ["the", "cat", "drank", "milk"]        | 1 // missing...the|a
+        ["a", "cat", "drink", "the", "milk"]   | 1 // drink -> drank
+        ["cat", "drank", "milk"]               | 2 // missing the|a... the|a...
     }
+
 
 }
