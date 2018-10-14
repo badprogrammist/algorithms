@@ -87,6 +87,7 @@
 4. Partition problem
 5. Parsing Context-Free Grammars
     - CYK Parsing Algorithm
+6. Minimum Weight Triangulation
 
 ## Intractable Problems and Approximations Algorithms
 TODO
