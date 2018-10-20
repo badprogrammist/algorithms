@@ -2,98 +2,43 @@ package ru.ildar.algorithm.dynamic;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
+ *
+ * Minimum Weight Triangulation (Gilbert (1979) and Klincsek (1980))
+ *
  */
 public class Triangulation {
 
     private double[][] points;
     private double[][] distance;
-    private int[][] diagonals;
-    private boolean[] discarded;
-    private double weight;
+    private int[][] distancePoints;
 
     public void triangulate(double[][] points) {
         this.points = points;
-        diagonals = new int[points.length - 3][2];
-        weight = 0;
+        distancePoints = new int[points.length][points.length];
         distance = new double[points.length][points.length];
-        discarded = new boolean[points.length];
 
-        for (int p1 = 0; p1 < points.length - 2; p1++) {
-            int p2 = p1 + 2;
-            calcDist(p1, p2);
+        for (int i = 0; i < points.length; i++) {
+            int j = i == points.length - 1 ? 0 : i + 1;
+            distance[i][j] = calcDist(i, j);
         }
 
-        for (int diagonalIdx = 0; diagonalIdx < points.length - 3; diagonalIdx++) {
-            int[] minDiagonal = findMinDiagonal();
+        for (int gap = 2; gap < points.length; gap++) {
+            for (int i = 0; i < points.length - gap; i++) {
+                int j = i + gap;
+                double minDist = Double.MAX_VALUE;
+                int minK = -1;
 
-            discard(minDiagonal);
-            putDiagonal(diagonalIdx, minDiagonal);
-            calcDistAboveDiagonal(minDiagonal);
-        }
+                for (int k = i + 1; k < j; k++) {
+                    double dist = distance[i][k] + distance[k][j] + calcDist(i, k) + calcDist(k, j);
 
-    }
-
-    private int[] findMinDiagonal() {
-        double minDistance = Double.MAX_VALUE;
-        int[] minDiagonal = new int[2];
-
-        for (int p1 = 0; p1 < points.length - 2; p1++) {
-            if (discarded[p1]) {
-                continue;
-            }
-
-            int p2 = p1;
-            int notDiscardedNumber = 0;
-            do {
-                p2++;
-                if (!discarded[p2]) {
-                    notDiscardedNumber++;
+                    if (dist < minDist) {
+                        minDist = dist;
+                        minK = k;
+                    }
                 }
-            } while ((discarded[p2] || notDiscardedNumber != 2)
-                    && p2 < points.length - 1);
-
-            if (discarded[p2] || notDiscardedNumber != 2) {
-                continue;
+                distancePoints[i][j] = minK;
+                distance[i][j] = minDist;
             }
-
-            if (distance[p1][p2] < minDistance) {
-                minDistance = distance[p1][p2];
-                minDiagonal[0] = p1;
-                minDiagonal[1] = p2;
-            }
-        }
-
-        return minDiagonal;
-    }
-
-    private int discard(int[] diagonalPoints) {
-        int point = diagonalPoints[0] + 1;
-        while (discarded[point] && point < diagonalPoints[1]) {
-            point++;
-        }
-
-        discarded[point] = true;
-        return point;
-    }
-
-    private void putDiagonal(int diagonalIdx, int[] diagonalPoints) {
-        diagonals[diagonalIdx] = diagonalPoints;
-        weight += distance[diagonalPoints[0]][diagonalPoints[1]];
-    }
-
-    private void calcDistAboveDiagonal(int[] diagonalPoints) {
-        int p1 = diagonalPoints[0];
-        int p2 = diagonalPoints[1] + 1;
-
-        if (p1 >= 0 && p2 < points.length) {
-            calcDist(p1, p2);
-        }
-
-        p1 = diagonalPoints[0] - 1;
-        p2 = diagonalPoints[1];
-
-        if (p1 >= 0 && p2 < points.length) {
-            calcDist(p1, p2);
         }
     }
 
@@ -109,11 +54,42 @@ public class Triangulation {
     }
 
     public int[][] getDiagonals() {
+        int[][] diagonals = new int[points.length - 3][2];
+        int diagonalIdx = 0;
+        int i = 0;
+        int j = points.length - 1;
+        int k = distancePoints[i][j];
+
+        while ((j - k >= 2 || k - i >= 2) && diagonalIdx <= (points.length - 3)) {
+            if (j - k >= 2) {
+                diagonals[diagonalIdx] = new int[] {k, j};
+
+                if (diagonalIdx == 0) {
+                    diagonalIdx++;
+                    diagonals[diagonalIdx] = new int[] {i, k};
+                }
+
+                i = k;
+            } else if (k - i >= 2) {
+                diagonals[diagonalIdx] = new int[] {i, k};
+
+                if (diagonalIdx == 0) {
+                    diagonalIdx++;
+                    diagonals[diagonalIdx] = new int[] {k, j};
+                }
+
+                j = k;
+            }
+
+            diagonalIdx++;
+            k = distancePoints[i][j];
+        }
+
         return diagonals;
     }
 
     public double getWeight() {
-        return weight;
+        return distance[0][points.length - 1];
     }
 
 }

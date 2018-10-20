@@ -7,7 +7,7 @@ import spock.lang.Specification
  */
 class TriangulationTest extends Specification {
 
-    def "Test of triangulation of a polygon"() {
+    def "Test of triangulation of a polygon via n^3 algorithm"() {
         when: "Trying to triangulate a polygon"
         Triangulation alg = new Triangulation()
         alg.triangulate(points as double[][])
@@ -26,17 +26,17 @@ class TriangulationTest extends Specification {
          [8, 4],
          [8, 2],
          [6, 1],
-         [3, 1]] | [[2, 4],
+         [3, 1]] | [[2, 6],
+                    [0, 2],
                     [2, 5],
-                    [1, 5],
-                    [1, 6]]  | 16.605551275463988
+                    [2, 4]]  | 20.77032961426901
 
         [[0, 0],
          [0, 2],
          [1, 2],
          [2, 1],
          [1, 0]] | [[2, 4],
-                    [0, 2]]  | 4.23606797749979
+                    [0, 2]]  | 8.47213595499958
     }
 
 }
