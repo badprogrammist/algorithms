@@ -88,6 +88,7 @@
 5. Parsing Context-Free Grammars
     - CYK Parsing Algorithm
 6. Minimum Weight Triangulation
+7. Change-making problem
 
 ## Intractable Problems and Approximations Algorithms
 TODO
