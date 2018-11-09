@@ -89,6 +89,8 @@
     - CYK Parsing Algorithm
 6. Minimum Weight Triangulation
 7. Change-making problem
+    - Greedy algorithm
+    - Classic algorithm
 
 ## Intractable Problems and Approximations Algorithms
 TODO
