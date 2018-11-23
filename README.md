@@ -91,6 +91,7 @@
 7. Change-making problem
     - Greedy algorithm
     - Classic algorithm
+8. Subset sum problem
 
 ## Intractable Problems and Approximations Algorithms
 TODO

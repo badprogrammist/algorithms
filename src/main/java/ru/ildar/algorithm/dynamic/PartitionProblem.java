@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 /**
  * @author Ildar Gafarov (ildar.gafarov.ufa@gmail.com)
+ *
+ * Problem: Integer Partition without Rearrangement
+ * Input:   An arrangement S of nonnegative numbers {s1, . . . , sn} and an integer k.
+ * Output:  Partition S into k or fewer ranges, to minimize the maximum sum over all the ranges,
+ *          without reordering any of the numbers.
  */
 public class PartitionProblem {
 
