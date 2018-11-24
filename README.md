@@ -92,6 +92,7 @@
     - Greedy algorithm
     - Classic algorithm
 8. Subset sum problem
+9. Max sum an arc of a circle of numbers
 
 ## Intractable Problems and Approximations Algorithms
 TODO
