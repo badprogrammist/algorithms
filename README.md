@@ -94,6 +94,7 @@
     - Classic algorithm
 8. Subset sum problem
 9. Max sum an arc of a circle of numbers
+10. Data compression
 
 ## Intractable Problems and Approximations Algorithms
 TODO
